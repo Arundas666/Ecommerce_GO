@@ -51,7 +51,7 @@ func UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
 		return &models.TokenUser{},errors.New("counldnt create access token due to error")
 	}
 
-	refreshToken,err:=helper.GenerateRefreshToke(userData)
+	refreshToken,err:=helper.GenerateRefreshToken(userData)
 	if err!=nil{
 		return &models.TokenUser{},errors.New("counldnt create refresh token due to error")
 	}
@@ -93,7 +93,7 @@ func UserLoginWithPassword(user models.LoginDetail) (*models.TokenUser, error) {
 	if err != nil {
 		return &models.TokenUser{}, errors.New("could not create accesstoken due to internal error")
 	}
-	refreshToken,err:=helper.GenerateRefreshToke(user_details)
+	refreshToken,err:=helper.GenerateRefreshToken(user_details)
 	if err!=nil{
 		return &models.TokenUser{},errors.New("counldnt create refresh token due to error")
 	}
@@ -107,5 +107,5 @@ func UserLoginWithPassword(user models.LoginDetail) (*models.TokenUser, error) {
 	
 
 
-	
+
 }

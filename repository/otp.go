@@ -3,10 +3,10 @@ package repository
 import (
 	database "firstpro/db"
 	"firstpro/utils/models"
+	"fmt"
 )
 
-
-func FindUserByMobileNumber(phone string)bool{
+func FindUserByMobileNumber(phone string) bool {
 	var count int
 	if err := database.DB.Raw("select count(*) from users where phone = ?", phone).Scan(&count).Error; err != nil {
 		return false
@@ -23,5 +23,24 @@ func UserDetailsUsingPhone(phone string) (models.SignupDetailResponse, error) {
 	}
 
 	return usersDetails, nil
+
+}
+func  FindUserByEmail(email string) (bool, error) {
+
+	var count int
+	if err := database.DB.Raw("select count(*) from users where email = ?", email).Scan(&count).Error; err != nil {
+		return false, err
+	}
+
+	return count > 0, nil
+}
+func GetUserPhoneByEmail(email string) (string, error) {
+	fmt.Println(email)
+	var phone string
+	if err := database.DB.Raw("select phone from users where email = ?", email).Scan(&phone).Error; err != nil {
+		return "", err
+	}
+
+	return phone, nil
 
 }

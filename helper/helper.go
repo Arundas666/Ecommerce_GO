@@ -59,7 +59,7 @@ func GenerateAccessToken(user models.SignupDetailResponse) (string, error) {
 
 }
 
-func GenerateRefreshToke(user models.SignupDetailResponse) (string, error) {
+func GenerateRefreshToken(user models.SignupDetailResponse) (string, error) {
 
 	expirationTime := time.Now().Add(24 * 90 * time.Hour)
 	tokeString, err := GenerateTokenUsers(user.Id, user.Email, expirationTime)

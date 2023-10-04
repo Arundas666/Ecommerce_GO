@@ -2,8 +2,9 @@ package helper
 
 import (
 	"errors"
+	
 	"firstpro/utils/models"
-	"fmt"
+	
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -25,23 +26,46 @@ func PasswordHashing(password string) (string, error) {
 	hash := string(hashedPassword)
 	return hash, nil
 }
-func GenerateTokenClients(user models.SignupDetailResponse) (string, error) {
+
+func GenerateTokenUsers(userID int, userEmail string, expirationTime time.Time) (string, error) {
+
 	claims := &AuthCustomClaims{
-		Id:    user.Id,
-		Email: user.Email,
-		Role:  "client",
+		Id:    userID,
+		Email: userEmail,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 48).Unix(),
+			ExpiresAt: expirationTime.Unix(),
 			IssuedAt:  time.Now().Unix(),
 		},
 	}
-	
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString([]byte("cosmetics"))
+	tokenString, err := token.SignedString([]byte("132457689"))
+
 	if err != nil {
-		fmt.Println("Token error is ", err)
+		return "", err
+	}
+
+	return tokenString, nil
+}
+
+func GenerateAccessToken(user models.SignupDetailResponse) (string, error) {
+
+	expirationTime := time.Now().Add(15 * time.Minute)
+	tokenString, err := GenerateTokenUsers(user.Id,user.Email,expirationTime)
+	if err != nil {
 		return "", err
 	}
 	return tokenString, nil
+
+}
+
+func GenerateRefreshToke(user models.SignupDetailResponse) (string, error) {
+
+	expirationTime := time.Now().Add(24 * 90 * time.Hour)
+	tokeString, err := GenerateTokenUsers(user.Id, user.Email, expirationTime)
+	if err != nil {
+		return "", err
+	}
+	return tokeString, nil
 
 }

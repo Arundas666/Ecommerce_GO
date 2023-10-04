@@ -9,7 +9,7 @@ import (
 
 func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 	r.POST("/signup", handlers.Signup)
-	// r.POST("/login-with-password", handlers.UserLogin)
+	r.POST("/login-with-password", handlers.UserLoginWithPassword)
 
 	return r
 

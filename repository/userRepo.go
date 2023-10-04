@@ -18,7 +18,7 @@ func CheckUserExistsByEmail(email string) (*domain.User, error) {
 			return nil, nil
 		}
 		return nil, result.Error
-	}
+	}	
 	return &user, nil
 }
 
@@ -32,8 +32,8 @@ func CheckUserExistsByPhone(phone string) (*domain.User, error) {
 		return nil, result.Error
 	}
 	return &user, nil
-
 }
+
 func UserSignup(user models.SignupDetail) (models.SignupDetailResponse, error) {
 	var signupDetail models.SignupDetailResponse
 	err := database.DB.Raw("INSERT INTO users(firstname,lastname,email,password,phone)VALUES(?,?,?,?,?)RETURNING id,firstname,lastname,email,phone", user.FirstName, user.LastName, user.Email, user.Password, user.Phone).Scan(&signupDetail).Error
@@ -45,7 +45,15 @@ func UserSignup(user models.SignupDetail) (models.SignupDetailResponse, error) {
 
 }
 
-// func UserLogin(user models.LoginDetail)() {
-	
+func FindUserDetailsByEmail(user models.LoginDetail)(models.UserLoginResponse,error) {
+	var userdetails models.UserLoginResponse
 
-// }
+	err:=	database.DB.Raw(
+		`SELECT * FROM users where email = ? and blocked = false`,user.Email).Scan(&userdetails).Error
+
+if err!=nil{
+	return models.UserLoginResponse{},errors.New("error checking user details")
+}
+return userdetails,nil
+
+}

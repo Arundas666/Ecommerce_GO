@@ -22,11 +22,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error connecting to the database: %v", err)
 	}
-	fmt.Println(db, "😢")
 
-	
+
 	router := gin.Default()
-	routes.UserRoutes(router, db)
+	routes.UserRoutes(router,db)
 
 	listenAddr := fmt.Sprintf("%s:%s", cfg.DBPort, cfg.DBHost)
 	fmt.Printf("Starting server on %s...\n", cfg.BASE_URL)

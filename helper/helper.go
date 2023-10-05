@@ -69,3 +69,4 @@ func GenerateRefreshToken(user models.SignupDetailResponse) (string, error) {
 	return tokeString, nil
 
 }
+

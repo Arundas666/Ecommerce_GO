@@ -4,7 +4,7 @@ type Products struct {
 	Name       string `json:"name"`
 	SKU        string `json:"sku"`
 	CategoryID uint   `json:"category_id"`
-	// Category           Category  `json:"-" gorm:"foreignkey:CategoryID;constraint:OnDelete:CASCADE"`
+	Category           Category  `json:"-" gorm:"foreignkey:CategoryID;constraint:OnDelete:CASCADE"`
 	Color             string  `json:"color"`
 	Size              string  `json:"size"`
 	Material          string  `json:"material"`
@@ -14,4 +14,8 @@ type Products struct {
 	Price             float64 `json:"price"`
 	ProductStatus string	`json:"product_status"`
 	IsDeleted         bool    `json:"is_deleted" gorm:"default:false"`
+}
+type Category struct{
+	ID        uint   `json:"id" gorm:"unique; not null"`
+	CategoryName string `json:"category_name"`
 }

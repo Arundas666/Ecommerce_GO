@@ -16,10 +16,12 @@ type Config struct {
 	AUTHTOKEN   string `mapstructure:"TWILIO_AUTHTOKEN"`
 	ACCOUNTSID  string `mapstructure:"TWILIO_ACCOUNTSID"`
 	SERVICESSID string `mapstructure:"TWILIO_SERVICESID"`
+
+	KEY string `mapstructure:"KEY"`
 }
 
 var envs = []string{
-	"BASE_URL", "DB_HOST", "DB_NAME", "DB_USER", "DB_PORT", "DB_PASSWORD", "TWILIO_AUTHTOKEN", "TWILIO_ACCOUNTSID", "TWILIO_SERVICESID",
+	"BASE_URL", "DB_HOST", "DB_NAME", "DB_USER", "DB_PORT", "DB_PASSWORD", "TWILIO_AUTHTOKEN", "TWILIO_ACCOUNTSID", "TWILIO_SERVICESID","KEY",
 }
 
 func LoadConfig() (Config, error) {

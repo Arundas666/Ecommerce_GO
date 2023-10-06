@@ -9,7 +9,7 @@ import (
 func LoginHandler(adminDetails models.AdminLogin) (domain.Admin, error) {
 
 	var adminCompareDetails domain.Admin
-	if err := database.DB.Raw("select * from admins where email = ? ", adminDetails.Email).Scan(&adminCompareDetails).Error; err != nil {
+	if err := database.DB.Raw("select * from users where email = ? AND isadmin=true ", adminDetails.Email).Scan(&adminCompareDetails).Error; err != nil {
 		return domain.Admin{}, err
 	}
 

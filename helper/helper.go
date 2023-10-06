@@ -2,9 +2,10 @@ package helper
 
 import (
 	"errors"
-	
+
+	"firstpro/config"
 	"firstpro/utils/models"
-	
+
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -28,6 +29,7 @@ func PasswordHashing(password string) (string, error) {
 }
 
 func GenerateTokenUsers(userID int, userEmail string, expirationTime time.Time) (string, error) {
+	cfg, _ := config.LoadConfig()
 
 	claims := &AuthCustomClaims{
 		Id:    userID,
@@ -39,7 +41,7 @@ func GenerateTokenUsers(userID int, userEmail string, expirationTime time.Time) 
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString([]byte("132457689")) 
+	tokenString, err := token.SignedString([]byte(cfg.KEY))
 
 	if err != nil {
 		return "", err
@@ -51,7 +53,7 @@ func GenerateTokenUsers(userID int, userEmail string, expirationTime time.Time) 
 func GenerateAccessToken(user models.SignupDetailResponse) (string, error) {
 
 	expirationTime := time.Now().Add(15 * time.Minute)
-	tokenString, err := GenerateTokenUsers(user.Id,user.Email,expirationTime)
+	tokenString, err := GenerateTokenUsers(user.Id, user.Email, expirationTime)
 	if err != nil {
 		return "", err
 	}
@@ -69,4 +71,3 @@ func GenerateRefreshToken(user models.SignupDetailResponse) (string, error) {
 	return tokeString, nil
 
 }
-

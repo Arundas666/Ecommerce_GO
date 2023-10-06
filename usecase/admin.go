@@ -20,11 +20,9 @@ func LoginHandler(adminDetails models.AdminLogin) (domain.TokenAdmin, error) {
 		return domain.TokenAdmin{}, err
 	}
 
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(adminCompareDetails.Password), bcrypt.DefaultCost)
-
 	// compare password from database and that provided from admins
 
-	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(adminDetails.Password))
+	err = bcrypt.CompareHashAndPassword([]byte(adminCompareDetails.Password), []byte(adminDetails.Password))
 	if err != nil {
 		fmt.Println("👺", err)
 		return domain.TokenAdmin{}, err

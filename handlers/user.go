@@ -4,7 +4,7 @@ import (
 	"firstpro/usecase"
 	"firstpro/utils/models"
 	"firstpro/utils/response"
-	"fmt"
+	
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -29,7 +29,7 @@ func Signup(c *gin.Context) {
 
 	//creating a newuser signup with the given deatil passing into the bussiness logic layer
 	userCreated, err := usecase.UserSignup(userSignup)
-	fmt.Println(userCreated, "😍")
+	
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusBadRequest, "fields provided are in wrong formaaaaat", nil, err.Error())
 		c.JSON(http.StatusBadRequest, errRes)

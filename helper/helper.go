@@ -39,7 +39,7 @@ func GenerateTokenUsers(userID int, userEmail string, expirationTime time.Time) 
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString([]byte("132457689"))
+	tokenString, err := token.SignedString([]byte("132457689")) 
 
 	if err != nil {
 		return "", err

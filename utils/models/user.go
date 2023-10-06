@@ -10,14 +10,14 @@ type SignupDetail struct {
 
 type SignupDetailResponse struct {
 	Id        int    `json:"id"`
-	FirstName string `json:"firstname"`
-	LastName  string `json:"lastname"`
+	Firstname string `json:"firstname"`
+	Lastname  string `json:"lastname"`
 	Email     string `json:"email"`
 	Phone     string `json:"phone"`
 }
 type TokenUser struct {
-	Users SignupDetailResponse
-	AccessToken string
+	Users        SignupDetailResponse
+	AccessToken  string
 	RefreshToken string
 }
 type LoginDetail struct {
@@ -25,13 +25,12 @@ type LoginDetail struct {
 	Password string `json:"password"`
 }
 
-type UserLoginResponse struct{
-	Id uint `json:"id"`
-	UserId uint `json:"user_id"`
+type UserLoginResponse struct {
+	Id        uint   `json:"id"`
+	UserId    uint   `json:"user_id"`
 	Firstname string `json:"firstname"`
-	Lastname string `json:"lastname"`
-	Email string `json:"email"`
-	Phone string `json:"phone"`
-	Password string `json:"password"`
-
+	Lastname  string `json:"lastname"`
+	Email     string `json:"email"`
+	Phone     string `json:"phone"`
+	Password  string `json:"password"`
 }

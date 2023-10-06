@@ -32,15 +32,17 @@ func CheckValidityOfCategory(data map[string]int) error {
 		if err != nil {
 			return err
 		}
+
 		if count < 1 {
 			return errors.New("genre does not exist")
 		}
 	}
 	return nil
 }
-func GetProductFromCategory(id int) (models.ProductBrief, error) {
 
-	var product models.ProductBrief
+func GetProductFromCategory(id int) ([]models.ProductBrief, error) {
+
+	var product []models.ProductBrief
 	err := database.DB.Raw(`
 		SELECT *
 		FROM products
@@ -49,11 +51,9 @@ func GetProductFromCategory(id int) (models.ProductBrief, error) {
 	`, id).Scan(&product).Error
 
 	if err != nil {
-		return models.ProductBrief{}, err
+		return []models.ProductBrief{}, err
 	}
-
 	return product, nil
-
 }
 
 func GetQuantityFromProductID(id int) (int, error) {

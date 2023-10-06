@@ -21,6 +21,7 @@ func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 	r.GET("/page/:page", handlers.ShowAllProducts)
 	r.POST("/filter", handlers.FilterCategory)
 
+	
 
 	r.POST("/adminlogin", handlers.LoginHandler)
 

@@ -1,18 +1,32 @@
 package repository
 
 import (
+	"errors"
 	database "firstpro/db"
+	"firstpro/domain"
 	"firstpro/utils/models"
 	"fmt"
+
+	"gorm.io/gorm"
 )
 
-func FindUserByMobileNumber(phone string) bool {
-	var count int
-	if err := database.DB.Raw("select count(*) from users where phone = ?", phone).Scan(&count).Error; err != nil {
-		return false
-	}
+func FindUserByMobileNumber(phone string) (*domain.User, error) {
 
-	return count > 0
+	// var count int
+	// if err := database.DB.Raw("select count(*) from users where phone = ?", phone).Scan(&count).Error; err != nil {
+	// 	return false
+	// }
+
+	// return count > 0
+	var user domain.User
+	result := database.DB.Where(&domain.User{Phone: phone}).First(&user)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, result.Error
+	}
+	return &user, nil
 
 }
 func UserDetailsUsingPhone(phone string) (models.SignupDetailResponse, error) {
@@ -25,7 +39,7 @@ func UserDetailsUsingPhone(phone string) (models.SignupDetailResponse, error) {
 	return usersDetails, nil
 
 }
-func  FindUserByEmail(email string) (bool, error) {
+func FindUserByEmail(email string) (bool, error) {
 
 	var count int
 	if err := database.DB.Raw("select count(*) from users where email = ?", email).Scan(&count).Error; err != nil {

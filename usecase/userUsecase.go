@@ -22,9 +22,9 @@ func UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
 	if email != nil {
 		return &models.TokenUser{}, errors.New("user with this email is already exists")
 	}
-	fmt.Println("fghfvwhgbfyh")
+	
 	phone, err := repository.CheckUserExistsByPhone(user.Phone)
-	fmt.Println(phone, "ewrtty")
+	
 	if err != nil {
 		return &models.TokenUser{}, errors.New("error with server")
 	}

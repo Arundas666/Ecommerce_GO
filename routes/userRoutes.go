@@ -2,6 +2,7 @@ package routes
 
 import (
 	"firstpro/handlers"
+	"firstpro/middleware"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -16,8 +17,8 @@ func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 
 
 
-	
-	r.GET("/", handlers.ShowAllProducts)
+
+	// r.GET("/", handlers.ShowAllProducts)
 	r.GET("/page/:page", handlers.ShowAllProducts)
 	r.POST("/filter", handlers.FilterCategory)
 
@@ -25,7 +26,7 @@ func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 
 	r.POST("/adminlogin", handlers.LoginHandler)
 
-	r.GET("/dashboard", handlers.DashBoard)
+	r.GET("/dashboard",middleware.AuthMIddleware(), handlers.DashBoard)
 
 	return r
 

@@ -29,6 +29,7 @@ func LoginHandler(c *gin.Context) { // login handler for the admin
 	c.JSON(http.StatusOK, successRes)
 
 }
+
 func DashBoard(c *gin.Context) {
 
 	adminDashBoard, err := usecase.DashBoard()

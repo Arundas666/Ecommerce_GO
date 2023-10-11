@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AuthMIddleware() gin.HandlerFunc {
+func AuthorizationMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenHeader := c.GetHeader("Authorization")
 		fmt.Println(tokenHeader, "this is the token header")
@@ -19,7 +19,6 @@ func AuthMIddleware() gin.HandlerFunc {
 			c.JSON(http.StatusUnauthorized, response)
 			c.Abort()
 			return
-
 		}
 
 		splitted := strings.Split(tokenHeader, " ")

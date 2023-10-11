@@ -19,11 +19,11 @@ func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 	r.GET("/page/:page", handlers.ShowAllProducts)
 	r.POST("/filter", handlers.FilterCategory)
 
-	r.POST("/addtocart/:id", handlers.AddToCart)
+	r.POST("/addtocart/:id", middleware.AuthMiddleware(), handlers.AddToCart)
 
 	r.POST("/adminlogin", handlers.LoginHandler)
 
-	r.GET("/dashboard", middleware.AuthMIddleware(), handlers.DashBoard)
+	r.GET("/dashboard", middleware.AuthorizationMiddleware(), handlers.DashBoard)
 
 	return r
 

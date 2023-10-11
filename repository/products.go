@@ -67,3 +67,11 @@ func GetQuantityFromProductID(id int) (int, error) {
 	return quantity, nil
 
 }
+func GetPriceOfProductFromID(prodcut_id int) (float64, error) {
+	var productPrice float64
+
+	if err := database.DB.Raw("select price from products where id = ?", prodcut_id).Scan(&productPrice).Error; err != nil {
+		return 0.0, err
+	}
+	return productPrice, nil
+}

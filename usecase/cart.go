@@ -4,7 +4,6 @@ import (
 	"errors"
 	"firstpro/repository"
 	"firstpro/utils/models"
-	
 )
 
 func AddToCart(product_id int, user_id int) (models.CartResponse, error) {
@@ -64,13 +63,68 @@ func AddToCart(product_id int, user_id int) (models.CartResponse, error) {
 	}
 	cartTotal, err := repository.GetTotalPrice(user_id)
 	if err != nil {
-		
+
 		return models.CartResponse{}, err
 	}
 	return models.CartResponse{
 		UserName:   cartTotal.UserName,
 		TotalPrice: cartTotal.TotalPrice,
 		Cart:       cartDetails,
+	}, nil
+
+}
+
+func RemoveFromCart(product_id int, user_id int) (models.CartResponse, error) {
+	ok, err := repository.ProductExist(user_id, product_id)
+	if err != nil {
+		return models.CartResponse{}, err
+	}
+	if !ok {
+		return models.CartResponse{}, errors.New("product does'nt exist in the cart")
+	}
+	var cartDetails struct {
+		Quantity   int
+		TotalPrice float64
+	}
+
+	cartDetails, err = repository.GetQuantityAndProductDetails(user_id, product_id, cartDetails)
+	if err != nil {
+		return models.CartResponse{}, err
+	}
+
+	cartDetails.Quantity = cartDetails.Quantity - 1
+
+	//remove the product if quantity after deleting is 0
+	if cartDetails.Quantity == 0 {
+		if err := repository.RemoveProductFromCart(user_id, product_id); err != nil {
+			return models.CartResponse{}, err
+		}
+
+	}
+	if cartDetails.Quantity != 0 {
+
+		product_price, err := repository.GetPriceOfProductFromID(product_id)
+		if err != nil {
+			return models.CartResponse{}, err
+		}
+		cartDetails.TotalPrice = cartDetails.TotalPrice - product_price
+		err = repository.UpdateCartDetails(cartDetails, user_id, product_id)
+		if err != nil {
+			return models.CartResponse{}, err
+		}
+	}
+	updatedCart, err := repository.CartAfterRemovalOfProduct(user_id)
+	if err != nil {
+		return models.CartResponse{}, err
+	}
+	cartTotal, err := repository.GetTotalPrice(user_id)
+	if err != nil {
+		return models.CartResponse{}, err
+	}
+	return models.CartResponse{
+		UserName:   cartTotal.UserName,
+		TotalPrice: cartTotal.TotalPrice,
+		Cart:       updatedCart,
 	}, nil
 
 }

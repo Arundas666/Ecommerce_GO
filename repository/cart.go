@@ -98,3 +98,52 @@ func GetTotalPrice(userID int) (models.CartTotal, error) {
 	return cartTotal, nil
 
 }
+
+func ProductExist(userID int, productID int) (bool, error) {
+	var count int
+	if err := database.DB.Raw("select count(*) from carts where user_id = ? and product_id = ?", userID, productID).Scan(&count).Error; err != nil {
+		return false, err
+	}
+	return count > 0, nil
+
+}
+func GetQuantityAndProductDetails(userId int, productId int, cartDetails struct {
+	Quantity   int
+	TotalPrice float64
+}) (struct {
+	Quantity   int
+	TotalPrice float64
+}, error) {
+	if err := database.DB.Raw("select quantity,total_price from carts where user_id = ? and product_id = ?", userId, productId).Scan(&cartDetails).Error; err != nil {
+		return struct {
+			Quantity   int
+			TotalPrice float64
+		}{}, err
+	}
+	return cartDetails, nil
+}
+func RemoveProductFromCart(userID int, product_id int) error {
+
+	if err := database.DB.Exec("delete from carts where user_id = ? and product_id = ?", uint(userID), uint(product_id)).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+func UpdateCartDetails(cartDetails struct {
+	Quantity   int
+	TotalPrice float64
+}, userId int, productId int) error {
+	if err := database.DB.Raw("update carts set quantity = ? , total_price = ? where user_id = ? and product_id = ? ", cartDetails.Quantity, cartDetails.TotalPrice, userId, productId).Scan(&cartDetails).Error; err != nil {
+		return err
+	}
+	return nil
+
+}
+func CartAfterRemovalOfProduct(user_id int) ([]models.Cart, error) {
+	var cart []models.Cart
+	if err:=database.DB.Raw("select carts.product_id,products.name as product_name,carts.quantity,carts.total_price from carts inner join products on carts.product_id = products.id where carts.user_id = ?",user_id).Scan(&cart).Error; err!=nil{
+		return []models.Cart{},err
+	}
+	return cart,nil
+}

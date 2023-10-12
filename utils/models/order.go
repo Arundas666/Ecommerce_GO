@@ -17,3 +17,7 @@ type FullOrderDetails struct {
 	OrderDetails        OrderDetails
 	OrderProductDetails []OrderProductDetails
 }
+type OrderProducts struct {
+	ProductId string `json:"product_id"`
+	Quantity  int    `json:"quantity"`
+}

@@ -43,3 +43,25 @@ func GetOrderDetails(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "Full Order Details", fullOrderDetails, nil)
 	c.JSON(http.StatusOK, successRes)
 }
+
+func  CancelOrder(c *gin.Context) {
+	
+	orderID := c.Param("id")
+	fmt.Println("ordr id ",orderID)
+
+	id, _ := c.Get("user_id")
+	userID := id.(int)
+
+	err := usecase.CancelOrders(orderID, userID)
+
+	if err != nil {
+		errorRes := response.ClientResponse(http.StatusInternalServerError, "Could not cancel the order", nil, err.Error())
+		c.JSON(http.StatusInternalServerError, errorRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "Cancel Successfull", nil, nil)
+	c.JSON(http.StatusOK, successRes)
+
+}
+

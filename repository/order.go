@@ -38,3 +38,71 @@ func GetOrderDetail(orderId int) (models.OrderDetails, error) {
 	}
 	return OrderDetails, nil
 }
+
+func UserOrderRelationship(orderID string, userID int) (int, error) {
+
+	var testUserID int
+	err := database.DB.Raw("select user_id from orders where order_id = ?", orderID).Scan(&testUserID).Error
+	if err != nil {
+		return -1, err
+	}
+	return testUserID, nil
+}
+
+func CancelOrders(orderID string) error {
+	shipmentStatus := "cancelled"
+	err := database.DB.Exec("update orders set shipment_status = ? where order_id = ?", shipmentStatus, orderID).Error
+	if err != nil {
+		return err
+	}
+	var paymentMethod int
+	err = database.DB.Raw("select payment_method_id from orders where order_id = ?", orderID).Scan(&paymentMethod).Error
+	if err != nil {
+		return err
+	}
+	if paymentMethod == 3 || paymentMethod == 2 {
+		err = database.DB.Exec("update orders set payment_status = 'refunded'  where order_id = ?", orderID).Error
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+
+}
+func GetProductDetailsFromOrders(orderID string) ([]models.OrderProducts, error) {
+
+	var orderProductDetails []models.OrderProducts
+	if err := database.DB.Raw("select product_id,quantity from order_items where order_id = ?", orderID).Scan(&orderProductDetails).Error; err != nil {
+		return []models.OrderProducts{}, err
+	}
+
+	return orderProductDetails, nil
+}
+func GetShipmentStatus(orderID string) (string, error) {
+
+	var shipmentStatus string
+	err := database.DB.Raw("select shipment_status from orders where order_id = ?", orderID).Scan(&shipmentStatus).Error
+	if err != nil {
+		return "", err
+	}
+
+	return shipmentStatus, nil
+
+}
+func  UpdateQuantityOfProduct(orderProducts []models.OrderProducts) error {
+
+	for _, od := range orderProducts {
+
+		var quantity int
+		if err := database.DB.Raw("select quantity from products where id = ?", od.ProductId).Scan(&quantity).Error; err != nil {
+			return err
+		}
+
+		od.Quantity += quantity
+		if err := database.DB.Exec("update products set quantity = ? where id = ?", od.Quantity, od.ProductId).Error; err != nil {
+			return err
+		}
+	}
+	return nil
+
+}

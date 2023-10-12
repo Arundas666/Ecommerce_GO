@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"firstpro/usecase"
 	"firstpro/utils/models"
 	"firstpro/utils/response"
@@ -107,4 +108,66 @@ func AddAddress(c *gin.Context) {
 
 	c.JSON(200, SuccessRes)
 
+}
+
+func UserDetails(c *gin.Context) {
+
+	userID, _ := c.Get("user_id")
+
+	userDetails, err := usecase.UserDetails(userID.(int))
+	if err != nil {
+		errorRes := response.ClientResponse(http.StatusInternalServerError, "failed to retrieve details", nil, err.Error())
+		c.JSON(http.StatusInternalServerError, errorRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "user Details", userDetails, nil)
+	c.JSON(http.StatusOK, successRes)
+
+}
+func UpdateUserDetails(c *gin.Context) {
+
+	user_id, _ := c.Get("user_id")
+
+	var user models.UsersProfileDetails
+
+	if err := c.ShouldBindJSON(&user); err != nil {
+		errorRes := response.ClientResponse(http.StatusBadRequest, "fields provided are in wrong format", nil, err.Error())
+		c.JSON(http.StatusBadRequest, errorRes)
+		return
+	}
+
+	updatedDetails, err := usecase.UpdateUserDetails(user, user_id.(int))
+	if err != nil {
+		errorRes := response.ClientResponse(http.StatusInternalServerError, "failed update user", nil, err.Error())
+		c.JSON(http.StatusInternalServerError, errorRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "Updated User Details", updatedDetails, nil)
+	c.JSON(http.StatusOK, successRes)
+
+}
+
+func UpdatePassword(c *gin.Context) {
+	user_id, _ := c.Get("user_id")
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, "userID", user_id.(int))
+	var body models.UpdatePassword
+
+	if err := c.ShouldBindJSON(&body); err != nil {
+		errorRes := response.ClientResponse(http.StatusBadRequest, "fields provided are in wrong format", nil, err.Error())
+		c.JSON(http.StatusBadRequest, errorRes)
+		return
+	}
+	err := usecase.UpdatePassword(ctx, body)
+
+	if err != nil {
+		errorRes := response.ClientResponse(http.StatusInternalServerError, "failed updating password", nil, err.Error())
+		c.JSON(http.StatusInternalServerError, errorRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusCreated, "Password updated successfully", nil, nil)
+	c.JSON(http.StatusCreated, successRes)
 }

@@ -45,11 +45,23 @@ type AddressInfoResponse struct {
 	City      string `json:"city"`
 }
 type AddressInfo struct {
-	
 	Name      string `json:"name" validate:"required"`
 	HouseName string `json:"house_name" validate:"required"`
 	State     string `json:"state" validate:"required"`
 	Pin       string `json:"pin" validate:"required"`
 	Street    string `json:"street"`
 	City      string `json:"city"`
+}
+type UsersProfileDetails struct {
+	Firstname string `json:"firstname" binding:"required"`
+	Lastname  string `json:"lastname" binding:"required"`
+	Email     string `json:"email" binding:"required"`
+	Phone     string `json:"phone" binding:"required"`
+	// ReferralCode string `json:"referral_code" binding:"required"`
+}
+
+type UpdatePassword struct {
+	OldPassword        string `json:"old_password" binding:"required"`
+	NewPassword        string `json:"new_password" binding:"required"`
+	ConfirmNewPassword string `json:"confirm_new_password" binding:"required"`
 }

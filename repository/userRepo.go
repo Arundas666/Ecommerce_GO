@@ -10,6 +10,18 @@ import (
 	"gorm.io/gorm"
 )
 
+// check whether the user is already present in the database . If there recommend to login
+func CheckUserAvailability(email string) bool {
+
+	var count int
+	query := fmt.Sprintf("select count(*) from users where email='%s'", email)
+	if err := database.DB.Raw(query).Scan(&count).Error; err != nil {
+		return false
+	}
+	// if count is greater than 0 that means the user already exist
+	return count > 0
+
+}
 func CheckUserExistsByEmail(email string) (*domain.User, error) {
 	var user domain.User
 	result := database.DB.Where(&domain.User{Email: email}).First(&user)
@@ -72,6 +84,71 @@ func AddAddress(userId int, address models.AddressInfo) error {
 	if err := database.DB.Raw("insert into addresses(user_id,name,house_name,street,city,state,pin)  values(?,?,?,?,?,?,?)", userId, address.Name, address.HouseName, address.Street, address.City, address.State, address.Pin).Scan(&address).Error; err != nil {
 		return err
 	}
-	
+	return nil
+}
+func UserDetails(userID int) (models.UsersProfileDetails, error) {
+
+	var userDetails models.UsersProfileDetails
+	err := database.DB.Raw("select users.firstname,users.lastname,users.email,users.phone from users  where users.id = ?", userID).Row().Scan(&userDetails.Firstname, &userDetails.Lastname, &userDetails.Email, &userDetails.Phone)
+	if err != nil {
+		return models.UsersProfileDetails{}, err
+	}
+	return userDetails, nil
+}
+
+func UpdateUserEmail(email string, userID int) error {
+
+	err := database.DB.Exec("update users set email = ? where id = ?", email, userID).Error
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
+func UpdateUserPhone(phone string, userID int) error {
+
+	err := database.DB.Exec("update users set phone = ? where id = ?", phone, userID).Error
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
+func UpdateFirstName(name string, userID int) error {
+
+	err := database.DB.Exec("update users set firstname = ? where id = ?", name, userID).Error
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+func UpdateLastName(name string, userID int) error {
+
+	err := database.DB.Exec("update users set lastname = ? where id = ?", name, userID).Error
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+func UserPassword(userID int) (string, error) {
+
+	var userPassword string
+	err := database.DB.Raw("select password from users where id = ?", userID).Scan(&userPassword).Error
+	if err != nil {
+		return "", err
+	}
+	return userPassword, nil
+
+}
+func UpdateUserPassword(password string, userID int) error {
+	err := database.DB.Exec("update users set password = ? where id = ?", password, userID).Error
+	if err != nil {
+		return err
+	}
+	fmt.Println("password Updated succesfully")
 	return nil
 }

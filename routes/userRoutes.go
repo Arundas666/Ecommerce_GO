@@ -20,6 +20,9 @@ func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 	r.POST("/filter", handlers.FilterCategory)
 	r.GET("/showaddress", middleware.AuthMiddleware(), handlers.GetAllAddress)
 	r.POST("/add-address", middleware.AuthMiddleware(), handlers.AddAddress)
+	r.GET("/show-user-details", middleware.AuthMiddleware(), handlers.UserDetails)
+	r.POST("/edit-user-profile", middleware.AuthMiddleware(), handlers.UpdateUserDetails)
+	r.POST("/update-password", middleware.AuthMiddleware(), handlers.UpdatePassword)
 
 	//CART
 	r.POST("/addtocart/:id", middleware.AuthMiddleware(), handlers.AddToCart)

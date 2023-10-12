@@ -4,6 +4,7 @@ import (
 	"firstpro/usecase"
 	"firstpro/utils/models"
 	"firstpro/utils/response"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,6 +13,7 @@ import (
 func LoginHandler(c *gin.Context) { // login handler for the admin
 
 	var adminDetails models.AdminLogin
+	fmt.Println("admin details is ", adminDetails)
 	if err := c.ShouldBindJSON(&adminDetails); err != nil {
 		errRes := response.ClientResponse(http.StatusBadRequest, "details not in correct format", nil, err.Error())
 		c.JSON(http.StatusBadRequest, errRes)

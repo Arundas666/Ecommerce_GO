@@ -34,3 +34,22 @@ type UserLoginResponse struct {
 	Phone     string `json:"phone"`
 	Password  string `json:"password"`
 }
+
+type AddressInfoResponse struct {
+	ID        uint   `json:"id"`
+	Name      string `json:"name" validate:"required"`
+	HouseName string `json:"house_name" validate:"required"`
+	State     string `json:"state" validate:"required"`
+	Pin       string `json:"pin" validate:"required"`
+	Street    string `json:"street"`
+	City      string `json:"city"`
+}
+type AddressInfo struct {
+	
+	Name      string `json:"name" validate:"required"`
+	HouseName string `json:"house_name" validate:"required"`
+	State     string `json:"state" validate:"required"`
+	Pin       string `json:"pin" validate:"required"`
+	Street    string `json:"street"`
+	City      string `json:"city"`
+}

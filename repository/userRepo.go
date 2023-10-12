@@ -18,7 +18,7 @@ func CheckUserExistsByEmail(email string) (*domain.User, error) {
 			return nil, nil
 		}
 		return nil, result.Error
-	}	
+	}
 	return &user, nil
 }
 
@@ -45,15 +45,33 @@ func UserSignup(user models.SignupDetail) (models.SignupDetailResponse, error) {
 
 }
 
-func FindUserDetailsByEmail(user models.LoginDetail)(models.UserLoginResponse,error) {
+func FindUserDetailsByEmail(user models.LoginDetail) (models.UserLoginResponse, error) {
 	var userdetails models.UserLoginResponse
 
-	err:=	database.DB.Raw(
-		`SELECT * FROM users where email = ? and blocked = false`,user.Email).Scan(&userdetails).Error
+	err := database.DB.Raw(
+		`SELECT * FROM users where email = ? and blocked = false`, user.Email).Scan(&userdetails).Error
 
-if err!=nil{
-	return models.UserLoginResponse{},errors.New("error checking user details")
+	if err != nil {
+		return models.UserLoginResponse{}, errors.New("error checking user details")
+	}
+	return userdetails, nil
+
 }
-return userdetails,nil
 
+func GetAllAddress(userId int) (models.AddressInfoResponse, error) {
+	var addressInfoResponse models.AddressInfoResponse
+	if err := database.DB.Raw("select * from addresses where user_id = ?", userId).Scan(&addressInfoResponse).Error; err != nil {
+		return models.AddressInfoResponse{}, err
+	}
+	fmt.Println(addressInfoResponse, "HEyy")
+	return addressInfoResponse, nil
+}
+
+func AddAddress(userId int, address models.AddressInfo) error {
+
+	if err := database.DB.Raw("insert into addresses(user_id,name,house_name,street,city,state,pin)  values(?,?,?,?,?,?,?)", userId, address.Name, address.HouseName, address.Street, address.City, address.State, address.Pin).Scan(&address).Error; err != nil {
+		return err
+	}
+	
+	return nil
 }

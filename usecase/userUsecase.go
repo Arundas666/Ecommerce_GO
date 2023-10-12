@@ -22,9 +22,9 @@ func UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
 	if email != nil {
 		return &models.TokenUser{}, errors.New("user with this email is already exists")
 	}
-	
+
 	phone, err := repository.CheckUserExistsByPhone(user.Phone)
-	
+
 	if err != nil {
 		return &models.TokenUser{}, errors.New("error with server")
 	}
@@ -47,18 +47,18 @@ func UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
 
 	//creating a jwt token for the new user with the detail that has been stored in the database
 	accessToken, err := helper.GenerateAccessToken(userData)
-	if err!=nil{
-		return &models.TokenUser{},errors.New("counldnt create access token due to error")
+	if err != nil {
+		return &models.TokenUser{}, errors.New("counldnt create access token due to error")
 	}
 
-	refreshToken,err:=helper.GenerateRefreshToken(userData)
-	if err!=nil{
-		return &models.TokenUser{},errors.New("counldnt create refresh token due to error")
+	refreshToken, err := helper.GenerateRefreshToken(userData)
+	if err != nil {
+		return &models.TokenUser{}, errors.New("counldnt create refresh token due to error")
 	}
-	
+
 	return &models.TokenUser{
-		Users: userData,
-		AccessToken: accessToken,
+		Users:        userData,
+		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil
 
@@ -93,19 +93,31 @@ func UserLoginWithPassword(user models.LoginDetail) (*models.TokenUser, error) {
 	if err != nil {
 		return &models.TokenUser{}, errors.New("could not create accesstoken due to internal error")
 	}
-	refreshToken,err:=helper.GenerateRefreshToken(user_details)
-	if err!=nil{
-		return &models.TokenUser{},errors.New("counldnt create refresh token due to error")
+	refreshToken, err := helper.GenerateRefreshToken(user_details)
+	if err != nil {
+		return &models.TokenUser{}, errors.New("counldnt create refresh token due to error")
 	}
 
 	return &models.TokenUser{
-		Users: user_details,
-		AccessToken: accessToken,
+		Users:        user_details,
+		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil
+}
 
+func GetAllAddress(userId int) (models.AddressInfoResponse, error) {
+	addressInfo, err := repository.GetAllAddress(userId)
+	if err != nil {
+		return models.AddressInfoResponse{}, err
+	}
+	return addressInfo, nil
+
+}
+func AddAddress(userId int, address models.AddressInfo) error {
+	if err := repository.AddAddress(userId, address); err != nil {
+		return err
+	}
 	
-
-
+	return nil
 
 }

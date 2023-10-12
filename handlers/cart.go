@@ -55,3 +55,29 @@ func RemoveFromCart(c *gin.Context) {
 	c.JSON(200, succesRes)
 
 }
+
+func DisplayCart(c *gin.Context) {
+
+	userID, _ := c.Get("user_id")
+	cart, err := usecase.DisplayCart(userID.(int))
+	if err != nil {
+		errorRes := response.ClientResponse(http.StatusBadRequest, "cannot display cart", nil, err.Error())
+		c.JSON(http.StatusBadRequest, errorRes)
+		return
+	}
+	successRes := response.ClientResponse(http.StatusOK, "Cart items displayed successfully", cart, nil)
+	c.JSON(http.StatusOK, successRes)
+
+}
+func EmptyCart(c *gin.Context) {
+	userID, _ := c.Get("user_id")
+	cart, err := usecase.EmptyCart(userID.(int))
+	if err != nil {
+		errorRes := response.ClientResponse(http.StatusBadRequest, "cannot empty the cart", nil, err.Error())
+		c.JSON(http.StatusBadRequest, errorRes)
+		return
+	}
+	successRes := response.ClientResponse(http.StatusOK, "Cart emptied successfully", cart, nil)
+	c.JSON(http.StatusOK, successRes)
+
+}

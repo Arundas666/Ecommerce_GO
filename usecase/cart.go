@@ -128,3 +128,47 @@ func RemoveFromCart(product_id int, user_id int) (models.CartResponse, error) {
 	}, nil
 
 }
+func DisplayCart(user_id int) (models.CartResponse, error) {
+
+	cart, err := repository.DisplayCart(user_id)
+	if err != nil {
+		return models.CartResponse{}, err
+	}
+	cartTotal, err := repository.GetTotalPrice(user_id)
+	if err != nil {
+		return models.CartResponse{}, err
+	}
+	return models.CartResponse{
+		UserName:   cartTotal.UserName,
+		TotalPrice: cartTotal.TotalPrice,
+		Cart:       cart,
+	}, nil
+
+}
+func EmptyCart(userID int) (models.CartResponse, error) {
+	ok, err := repository.CartExist(userID)
+	if err != nil {
+		return models.CartResponse{}, err
+	}
+	if !ok {
+		return models.CartResponse{}, errors.New("cart already empty")
+	}
+	if err := repository.EmptyCart(userID); err != nil {
+		return models.CartResponse{}, err
+	}
+
+	cartTotal, err := repository.GetTotalPrice(userID)
+
+	if err != nil {
+		return models.CartResponse{}, err
+	}
+
+	cartResponse := models.CartResponse{
+		UserName:   cartTotal.UserName,
+		TotalPrice: cartTotal.TotalPrice,
+		Cart:       []models.Cart{},
+	}
+
+	return cartResponse, nil
+
+}

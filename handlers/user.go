@@ -4,7 +4,7 @@ import (
 	"firstpro/usecase"
 	"firstpro/utils/models"
 	"firstpro/utils/response"
-	
+
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -29,7 +29,7 @@ func Signup(c *gin.Context) {
 
 	//creating a newuser signup with the given deatil passing into the bussiness logic layer
 	userCreated, err := usecase.UserSignup(userSignup)
-	
+
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusBadRequest, "fields provided are in wrong formaaaaat", nil, err.Error())
 		c.JSON(http.StatusBadRequest, errRes)
@@ -60,5 +60,51 @@ func UserLoginWithPassword(c *gin.Context) {
 	}
 	successRes := response.ClientResponse(http.StatusCreated, "User successfully Logged In With password", userLoggedInWithPassword, nil)
 	c.JSON(http.StatusCreated, successRes)
+
+}
+
+func GetAllAddress(c *gin.Context) {
+	userID, _ := c.Get("user_id")
+
+	addressInfo, err := usecase.GetAllAddress(userID.(int))
+	if err != nil {
+		errorRes := response.ClientResponse(http.StatusInternalServerError, "failed to retrieve details", nil, err.Error())
+		c.JSON(http.StatusInternalServerError, errorRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "User Address", addressInfo, nil)
+	c.JSON(http.StatusOK, successRes)
+
+}
+
+func AddAddress(c *gin.Context) {
+	userID, _ := c.Get("user_id")
+
+	var address models.AddressInfo
+
+	if err := c.ShouldBindJSON(&address); err != nil {
+		errRes := response.ClientResponse(http.StatusBadRequest, "fields provided are in wrong format", nil, err.Error())
+		c.JSON(http.StatusBadRequest, errRes)
+		return
+	}
+
+	err := validator.New().Struct(address)
+
+	if err != nil {
+		errRes := response.ClientResponse(http.StatusBadRequest, "constraints does not match", nil, err.Error())
+		c.JSON(http.StatusBadRequest, errRes)
+		return
+	}
+	if err := usecase.AddAddress(userID.(int), address); err != nil {
+		errRes := response.ClientResponse(http.StatusBadRequest, "error in adding address", nil, err.Error())
+		c.JSON(http.StatusBadRequest, errRes)
+		return
+
+	}
+
+	SuccessRes := response.ClientResponse(200, "address added successfully", nil, nil)
+
+	c.JSON(200, SuccessRes)
 
 }

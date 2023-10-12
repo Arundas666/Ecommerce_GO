@@ -142,8 +142,25 @@ func UpdateCartDetails(cartDetails struct {
 }
 func CartAfterRemovalOfProduct(user_id int) ([]models.Cart, error) {
 	var cart []models.Cart
-	if err:=database.DB.Raw("select carts.product_id,products.name as product_name,carts.quantity,carts.total_price from carts inner join products on carts.product_id = products.id where carts.user_id = ?",user_id).Scan(&cart).Error; err!=nil{
-		return []models.Cart{},err
+	if err := database.DB.Raw("select carts.product_id,products.name as product_name,carts.quantity,carts.total_price from carts inner join products on carts.product_id = products.id where carts.user_id = ?", user_id).Scan(&cart).Error; err != nil {
+		return []models.Cart{}, err
 	}
-	return cart,nil
+	return cart, nil
+}
+func CartExist(userID int) (bool, error) {
+	var count int
+	if err := database.DB.Raw("select count(*) from carts where user_id = ? ", userID).Scan(&count).Error; err != nil {
+		return false, err
+	}
+	return count > 0, nil
+
+}
+func EmptyCart(userID int) error {
+
+	if err := database.DB.Exec("delete from carts where user_id = ? ", userID).Error; err != nil {
+		return err
+	}
+
+	return nil
+
 }

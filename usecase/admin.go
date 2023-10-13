@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"errors"
 	"firstpro/domain"
 	"firstpro/helper"
 	"firstpro/repository"
@@ -55,6 +56,10 @@ func DashBoard() (models.CompleteAdminDashboard, error) {
 	if err != nil {
 		return models.CompleteAdminDashboard{}, err
 	}
+	orderDetails, err := repository.DashBoardOrder()
+	if err != nil {
+		return models.CompleteAdminDashboard{}, err
+	}
 
 	productDetails, err := repository.DashBoardProductDetails()
 	if err != nil {
@@ -65,6 +70,42 @@ func DashBoard() (models.CompleteAdminDashboard, error) {
 
 		DashboardUser:    userDetails,
 		DashBoardProduct: productDetails,
+		DashboardOrder:   orderDetails,
 	}, nil
+
+}
+func ApproveOrder(orderID string) error {
+	ok, err := repository.CheckOrderID(orderID)
+	if !ok {
+		return err
+	}
+
+	shipmentStatus, err := repository.GetShipmentStatus(orderID)
+	if err != nil {
+		return err
+	}
+
+	if shipmentStatus == "cancelled" {
+
+		return errors.New("the order is cancelled, cannot approve it")
+	}
+
+	if shipmentStatus == "pending" {
+
+		return errors.New("the order is pending, cannot approve it")
+	}
+	if shipmentStatus == "processing" {
+		fmt.Println("reached here")
+		err := repository.ApproveOrder(orderID)
+
+		if err != nil {
+			return err
+		}
+
+		return nil
+	}
+
+	// if the shipment status is not processing or cancelled. Then it is defenetely cancelled
+	return nil
 
 }

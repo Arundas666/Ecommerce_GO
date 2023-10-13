@@ -37,8 +37,16 @@ type DashBoardProduct struct {
 	TotalProducts     int
 	OutOfStockProduct int
 }
+type DashboardOrder struct {
+	CompletedOrder int
+	PendingOrder   int
+	CancelledOrder int
+	TotalOrder     int
+	TotalOrderItem int
+}
 
 type CompleteAdminDashboard struct {
 	DashboardUser    DashboardUser
 	DashBoardProduct DashBoardProduct
+	DashboardOrder	DashboardOrder
 }

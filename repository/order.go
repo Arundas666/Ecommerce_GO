@@ -89,7 +89,7 @@ func GetShipmentStatus(orderID string) (string, error) {
 	return shipmentStatus, nil
 
 }
-func  UpdateQuantityOfProduct(orderProducts []models.OrderProducts) error {
+func UpdateQuantityOfProduct(orderProducts []models.OrderProducts) error {
 
 	for _, od := range orderProducts {
 
@@ -106,3 +106,24 @@ func  UpdateQuantityOfProduct(orderProducts []models.OrderProducts) error {
 	return nil
 
 }
+
+func CheckOrderID(orderID string) (bool, error) {
+
+	var count int
+	err := database.DB.Raw("select count(*) from orders where order_id = ?", orderID).Scan(&count).Error
+	if err != nil {
+		return false, err
+	}
+
+	return count > 0, nil
+
+}
+func  ApproveOrder(orderID string) error {
+
+	err := database.DB.Exec("update orders set shipment_status = 'order placed',approval = true where order_id = ?", orderID).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+

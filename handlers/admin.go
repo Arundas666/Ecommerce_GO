@@ -45,3 +45,21 @@ func DashBoard(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
+
+func ApproveOrder(c *gin.Context) {
+
+	orderId := c.Param("order_id")
+
+	err := usecase.ApproveOrder(orderId)
+
+	if err != nil {
+		errorRes := response.ClientResponse(http.StatusInternalServerError, "could not approve the order", nil, err.Error())
+		c.JSON(http.StatusInternalServerError, errorRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "Order approved successfully", nil, nil)
+	c.JSON(http.StatusOK, successRes)
+
+}

@@ -46,3 +46,33 @@ func DashBoardProductDetails() (models.DashBoardProduct, error) {
 
 	return productDetails, nil
 }
+
+func DashBoardOrder() (models.DashboardOrder, error) {
+
+	var orderDetails models.DashboardOrder
+	err := database.DB.Raw("select count(*) from orders where payment_status = 'paid' and approval = true ").Scan(&orderDetails.CompletedOrder).Error
+	if err != nil {
+		return models.DashboardOrder{}, nil
+	}
+
+	err = database.DB.Raw("select count(*) from orders where shipment_status = 'pending' or shipment_status = 'processing'").Scan(&orderDetails.PendingOrder).Error
+	if err != nil {
+		return models.DashboardOrder{}, nil
+	}
+
+	err = database.DB.Raw("select count(*) from orders where shipment_status = 'cancelled'").Scan(&orderDetails.CancelledOrder).Error
+	if err != nil {
+		return models.DashboardOrder{}, nil
+	}
+
+	err = database.DB.Raw("select count(*) from orders").Scan(&orderDetails.TotalOrder).Error
+	if err != nil {
+		return models.DashboardOrder{}, nil
+	}
+
+	err = database.DB.Raw("select sum(quantity) from order_items").Scan(&orderDetails.TotalOrderItem).Error
+	if err != nil {
+		return models.DashboardOrder{}, nil
+	}
+	return orderDetails, nil
+}

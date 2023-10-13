@@ -39,6 +39,7 @@ func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 
 	r.GET("/dashboard", middleware.AuthorizationMiddleware(), handlers.DashBoard)
 	r.GET("/approve-order/:order_id", middleware.AuthorizationMiddleware(), handlers.ApproveOrder)
+	r.GET("/cancel-order/:order_id", middleware.AuthorizationMiddleware(), handlers.CancelOrderFromAdminSide)
 
 	return r
 

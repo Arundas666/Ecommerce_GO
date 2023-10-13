@@ -63,3 +63,20 @@ func ApproveOrder(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
+func  CancelOrderFromAdminSide(c *gin.Context) {
+
+	orderID := c.Param("order_id")
+
+	err := usecase.CancelOrderFromAdminSide(orderID)
+
+	if err != nil {
+		errorRes := response.ClientResponse(http.StatusInternalServerError, "Could not cancel the order", nil, err.Error())
+		c.JSON(http.StatusInternalServerError, errorRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "Cancel Successfull", nil, nil)
+	c.JSON(http.StatusOK, successRes)
+
+}

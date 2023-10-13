@@ -109,3 +109,25 @@ func ApproveOrder(orderID string) error {
 	return nil
 
 }
+
+func CancelOrderFromAdminSide(orderID string) error {
+
+	orderProducts, err := repository.GetProductDetailsFromOrders(orderID)
+	if err != nil {
+		return err
+	}
+
+	err = repository.CancelOrders(orderID)
+	if err != nil {
+		return err
+	}
+
+	// update the quantity to products since the order is cancelled
+	err = repository.UpdateQuantityOfProduct(orderProducts)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}

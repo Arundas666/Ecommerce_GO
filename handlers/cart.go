@@ -23,6 +23,7 @@ func AddToCart(c *gin.Context) {
 	// user_ID := c.Request.Header.Get("User_id")
 
 	// user_id, _ := strconv.Atoi(user_ID)
+	
 	cartResponse, err := usecase.AddToCart(product_id, user_ID.(int))
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusBadGateway, "could not add product to the cart", nil, err.Error())

@@ -34,6 +34,7 @@ func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 	r.GET("/orders/:page", middleware.AuthMiddleware(), handlers.GetOrderDetails)
 	r.PUT("/cancel-orders/:id", middleware.AuthMiddleware(), handlers.CancelOrder)
 
+	r.GET("/checkout", middleware.AuthMiddleware(), handlers.CheckOut)
 	//admin
 	r.POST("/adminlogin", handlers.LoginHandler)
 

@@ -171,3 +171,19 @@ func UpdatePassword(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusCreated, "Password updated successfully", nil, nil)
 	c.JSON(http.StatusCreated, successRes)
 }
+
+
+func  CheckOut(c *gin.Context) {
+
+	userID, _ := c.Get("user_id")
+	checkoutDetails, err := usecase.Checkout(userID.(int))
+
+	if err != nil {
+		errorRes := response.ClientResponse(http.StatusInternalServerError, "failed to retrieve details", nil, err.Error())
+		c.JSON(http.StatusInternalServerError, errorRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "Checkout Page loaded successfully", checkoutDetails, nil)
+	c.JSON(http.StatusOK, successRes)
+}

@@ -65,3 +65,17 @@ type UpdatePassword struct {
 	NewPassword        string `json:"new_password" binding:"required"`
 	ConfirmNewPassword string `json:"confirm_new_password" binding:"required"`
 }
+
+type PaymentDetails struct {
+	ID           uint   `json:"id"`
+	Payment_Name string `json:"payment_name"`
+}
+
+type CheckoutDetails struct {
+	AddressInfoResponse []AddressInfoResponse
+	Payment_Method      []PaymentDetails
+	Cart                []Cart
+	Grand_Total         float64
+	Total_Price         float64
+
+}

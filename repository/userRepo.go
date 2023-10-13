@@ -152,3 +152,30 @@ func UpdateUserPassword(password string, userID int) error {
 	fmt.Println("password Updated succesfully")
 	return nil
 }
+
+
+func GetAllAddresses(userID int) ([]models.AddressInfoResponse, error) {
+
+
+
+	var addressResponse []models.AddressInfoResponse
+	err := database.DB.Raw(`select * from addresses where user_id = $1`, userID).Scan(&addressResponse).Error
+	if err != nil {
+		return []models.AddressInfoResponse{}, err
+	}
+
+	return addressResponse, nil
+
+}
+
+func GetAllPaymentOption() ([]models.PaymentDetails, error) {
+
+	var paymentMethods []models.PaymentDetails
+	err := database.DB.Raw("select * from payment_methods").Scan(&paymentMethods).Error
+	if err != nil {
+		return []models.PaymentDetails{}, err
+	}
+
+	return paymentMethods, nil
+
+}

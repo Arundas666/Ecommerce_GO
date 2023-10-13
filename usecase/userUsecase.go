@@ -179,3 +179,43 @@ func UpdatePassword(ctx context.Context, body models.UpdatePassword) error {
 	}
 	return nil
 }
+
+
+func Checkout(userID int) (models.CheckoutDetails, error) {
+
+	// list all address added by the user
+	allUserAddress, err := repository.GetAllAddresses(userID)
+	if err != nil {
+		return models.CheckoutDetails{}, err
+	}
+
+	// get available payment options
+	paymentDetails, err := repository.GetAllPaymentOption()
+	if err != nil {
+		return models.CheckoutDetails{}, err
+	}
+
+	
+	// get all items from users cart
+	cartItems, err := repository.DisplayCart(userID)
+	if err != nil {
+		return models.CheckoutDetails{}, err
+	}
+
+	// get grand total of all the product
+	grandTotal, err := repository.GetTotalPrice(userID)
+	if err != nil {
+		return models.CheckoutDetails{}, err
+	}
+
+
+	return models.CheckoutDetails{
+		AddressInfoResponse: allUserAddress,
+		Payment_Method:      paymentDetails,
+		Cart:                cartItems,
+		
+		Grand_Total:         grandTotal.TotalPrice,
+		Total_Price:         grandTotal.FinalPrice,
+		
+	}, nil
+}

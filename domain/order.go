@@ -1,6 +1,10 @@
 package domain
 
-import "time"
+import (
+	"time"
+
+	
+)
 
 type PaymentMethod struct {
 	ID           uint   `gorm:"primarykey"`
@@ -40,3 +44,5 @@ type OrderSuccessResponse struct {
 	OrderID        string `json:"order_id"`
 	ShipmentStatus string `json:"order_status"`
 }
+
+

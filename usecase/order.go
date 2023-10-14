@@ -44,14 +44,37 @@ func CancelOrders(orderId string, userId int) error {
 	if shipmentStatus == "cancelled" {
 		return errors.New("the order is already cancelled, so no point in cancelling")
 	}
-	err=repository.CancelOrders(orderId)
-	if err!=nil{
+	err = repository.CancelOrders(orderId)
+	if err != nil {
 		return err
 	}
-	err=repository.UpdateQuantityOfProduct(orderProductDetails)
-	if err!=nil{
+	err = repository.UpdateQuantityOfProduct(orderProductDetails)
+	if err != nil {
 		return err
 	}
 	return nil
+
+}
+func ExecutePurchaseCOD(userID int, addressID int) (models.Invoice, error) {
+	ok, err := repository.CartExist(userID)
+	if err != nil {
+		return models.Invoice{}, err
+	}
+	if !ok {
+		return models.Invoice{}, errors.New("cart doesnt exist")
+	}
+	cartDetails, err := repository.DisplayCart(userID)
+	if err != nil {
+		return models.Invoice{}, err
+	}
+	addresses, err := repository.GetAllAddress(userID)
+	if err != nil {
+		return models.Invoice{}, err
+	}
+	Invoice := models.Invoice{
+		Cart:        cartDetails,
+		AddressInfo: addresses,
+	}
+	return Invoice, nil
 
 }

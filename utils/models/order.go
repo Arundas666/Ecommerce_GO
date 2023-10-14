@@ -8,10 +8,10 @@ type OrderDetails struct {
 }
 
 type OrderProductDetails struct {
-	ProductID  uint    `json:"product_id"`
-	ProductName  string  `json:"product_name"`
-	Quantity   int     `json:"quantity"`
-	TotalPrice float64 `json:"total_price"`
+	ProductID   uint    `json:"product_id"`
+	ProductName string  `json:"product_name"`
+	Quantity    int     `json:"quantity"`
+	TotalPrice  float64 `json:"total_price"`
 }
 type FullOrderDetails struct {
 	OrderDetails        OrderDetails
@@ -20,4 +20,9 @@ type FullOrderDetails struct {
 type OrderProducts struct {
 	ProductId string `json:"product_id"`
 	Quantity  int    `json:"quantity"`
+}
+
+type Invoice struct {
+	Cart        []Cart
+	AddressInfo AddressInfoResponse
 }

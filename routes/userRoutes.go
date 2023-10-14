@@ -33,15 +33,13 @@ func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 	//ORDERS
 	r.GET("/orders/:page", middleware.AuthMiddleware(), handlers.GetOrderDetails)
 	r.PUT("/cancel-orders/:id", middleware.AuthMiddleware(), handlers.CancelOrder)
-
 	r.GET("/checkout", middleware.AuthMiddleware(), handlers.CheckOut)
+	r.GET("/place-order/:address_id/:payment", middleware.AuthMiddleware(), handlers.PlaceOrder)
+
 	//admin
 	r.POST("/adminlogin", handlers.LoginHandler)
-
 	r.GET("/dashboard", middleware.AuthorizationMiddleware(), handlers.DashBoard)
 	r.GET("/approve-order/:order_id", middleware.AuthorizationMiddleware(), handlers.ApproveOrder)
 	r.GET("/cancel-order/:order_id", middleware.AuthorizationMiddleware(), handlers.CancelOrderFromAdminSide)
-
 	return r
-
 }

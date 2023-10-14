@@ -44,10 +44,10 @@ func GetOrderDetails(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
-func  CancelOrder(c *gin.Context) {
-	
+func CancelOrder(c *gin.Context) {
+
 	orderID := c.Param("id")
-	fmt.Println("ordr id ",orderID)
+	fmt.Println("ordr id ", orderID)
 
 	id, _ := c.Get("user_id")
 	userID := id.(int)
@@ -65,3 +65,26 @@ func  CancelOrder(c *gin.Context) {
 
 }
 
+func PlaceOrder(c *gin.Context) {
+	userID, _ := c.Get("user_id")
+	userId := userID.(int)
+	straddress := c.Param("address_id")
+	paymentMethod := c.Param("payment")
+	addressId, err := strconv.Atoi(straddress)
+	fmt.Println("payment is ", paymentMethod, "address is ", addressId)
+	if err != nil {
+		errorRes := response.ClientResponse(http.StatusInternalServerError, "string conversion failed", nil, err.Error())
+		c.JSON(http.StatusInternalServerError, errorRes)
+		return
+	}
+	if paymentMethod == "cash_on_delivery" {
+		Invoice, err := usecase.ExecutePurchaseCOD(userId, addressId)
+		if err != nil {
+			errorRes := response.ClientResponse(http.StatusInternalServerError, "error in making cod ", nil, err.Error())
+			c.JSON(http.StatusInternalServerError, errorRes)
+			return
+		}
+		successRes := response.ClientResponse(http.StatusOK, "Placed Order with cash on delivery", Invoice, nil)
+		c.JSON(http.StatusOK, successRes)
+	}
+}

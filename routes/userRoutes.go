@@ -16,12 +16,13 @@ func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 	r.POST("/verify-otp", handlers.VerifyOTP)
 
 	// r.GET("/", handlers.ShowAllProducts)
+
 	r.GET("/page/:page", handlers.ShowAllProducts)
 	r.POST("/filter", handlers.FilterCategory)
 	r.GET("/showaddress", middleware.AuthMiddleware(), handlers.GetAllAddress)
 	r.POST("/add-address", middleware.AuthMiddleware(), handlers.AddAddress)
 	r.GET("/show-user-details", middleware.AuthMiddleware(), handlers.UserDetails)
-	r.POST("/edit-user-profile", middleware.AuthMiddleware(), handlers.UpdateUserDetails)
+	r.PATCH("/edit-user-profile", middleware.AuthMiddleware(), handlers.UpdateUserDetails)
 	r.POST("/update-password", middleware.AuthMiddleware(), handlers.UpdatePassword)
 
 	//CART
@@ -34,7 +35,7 @@ func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 	r.GET("/orders/:page", middleware.AuthMiddleware(), handlers.GetOrderDetails)
 	r.PUT("/cancel-orders/:id", middleware.AuthMiddleware(), handlers.CancelOrder)
 	r.GET("/checkout", middleware.AuthMiddleware(), handlers.CheckOut)
-	r.GET("/place-order/:address_id/:payment", middleware.AuthMiddleware(), handlers.PlaceOrder)
+	r.GET("/place-order/:order_id/:payment", middleware.AuthMiddleware(), handlers.PlaceOrder)
 
 	//admin
 	r.POST("/adminlogin", handlers.LoginHandler)

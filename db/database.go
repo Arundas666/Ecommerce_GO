@@ -15,7 +15,7 @@ func ConnectDatabase(cfg config.Config) (*gorm.DB, error) {
 	pasqlInfo := fmt.Sprintf("host=%s user=%s dbname=%s port=%s password=%s", cfg.DBHost, cfg.DBUser, cfg.DBName, cfg.DBPort, cfg.DBPassword)
 	db, dberr := gorm.Open(postgres.Open(pasqlInfo), &gorm.Config{})
 	if dberr != nil {
-		return nil, fmt.Errorf("failed 😁 to connect to database:%w", dberr)
+		return nil, fmt.Errorf("failed  to connect to database:%w", dberr)
 	}
 
 	DB = db
@@ -27,7 +27,6 @@ func ConnectDatabase(cfg config.Config) (*gorm.DB, error) {
 	db.AutoMigrate(&domain.Address{})
 	db.AutoMigrate(&domain.Address{})
 	db.AutoMigrate(&domain.OrderItem{})
-	
 	db.AutoMigrate(&domain.Order{})
 	
 

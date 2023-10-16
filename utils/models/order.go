@@ -23,6 +23,7 @@ type OrderProducts struct {
 }
 
 type Invoice struct {
-	Cart        []Cart
+	OrderDetails OrderDetails
 	AddressInfo AddressInfoResponse
+	Cart        []Cart
 }

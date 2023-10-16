@@ -126,17 +126,17 @@ func UserDetails(userID int) (models.UsersProfileDetails, error) {
 }
 
 func UpdateUserDetails(userDetails models.UsersProfileDetails, userID int) (models.UsersProfileDetails, error) {
-	userExist := repository.CheckUserAvailability(userDetails.Email)
+	userExist := repository.CheckUserAvailabilityWithUserID(userID)
 
 	// update with email that does not already exist
-	if userExist {
-		return models.UsersProfileDetails{}, errors.New("user already exist, choose different email")
+
+	if !userExist {
+		return models.UsersProfileDetails{}, errors.New("user doesnt exist")
 	}
 	// which all field are not empty (which are provided from the front end should be updated)
 	if userDetails.Email != "" {
 		repository.UpdateUserEmail(userDetails.Email, userID)
 	}
-
 	if userDetails.Firstname != "" {
 		repository.UpdateFirstName(userDetails.Firstname, userID)
 	}
@@ -147,9 +147,7 @@ func UpdateUserDetails(userDetails models.UsersProfileDetails, userID int) (mode
 	if userDetails.Phone != "" {
 		repository.UpdateUserPhone(userDetails.Phone, userID)
 	}
-
 	return repository.UserDetails(userID)
-
 }
 func UpdatePassword(ctx context.Context, body models.UpdatePassword) error {
 	var userID int
@@ -157,7 +155,7 @@ func UpdatePassword(ctx context.Context, body models.UpdatePassword) error {
 	if userID, ok = ctx.Value("userID").(int); !ok {
 		return errors.New("error retrieving user details")
 	}
-	fmt.Println("user id is",userID)
+	fmt.Println("user id is", userID)
 	userPassword, err := repository.UserPassword(userID)
 	if err != nil {
 		return err
@@ -173,13 +171,12 @@ func UpdatePassword(ctx context.Context, body models.UpdatePassword) error {
 	if err != nil {
 		return err
 	}
-	if err:=repository.UpdateUserPassword(string(hashedPassword), userID); err!=nil{
+	if err := repository.UpdateUserPassword(string(hashedPassword), userID); err != nil {
 		fmt.Println(err)
 		return err
 	}
 	return nil
 }
-
 
 func Checkout(userID int) (models.CheckoutDetails, error) {
 
@@ -195,7 +192,6 @@ func Checkout(userID int) (models.CheckoutDetails, error) {
 		return models.CheckoutDetails{}, err
 	}
 
-	
 	// get all items from users cart
 	cartItems, err := repository.DisplayCart(userID)
 	if err != nil {
@@ -208,14 +204,12 @@ func Checkout(userID int) (models.CheckoutDetails, error) {
 		return models.CheckoutDetails{}, err
 	}
 
-
 	return models.CheckoutDetails{
 		AddressInfoResponse: allUserAddress,
 		Payment_Method:      paymentDetails,
 		Cart:                cartItems,
-		
-		Grand_Total:         grandTotal.TotalPrice,
-		Total_Price:         grandTotal.FinalPrice,
-		
+
+		Grand_Total: grandTotal.TotalPrice,
+		Total_Price: grandTotal.FinalPrice,
 	}, nil
 }

@@ -55,7 +55,7 @@ func CancelOrders(orderId string, userId int) error {
 	return nil
 
 }
-func ExecutePurchaseCOD(userID int, addressID int) (models.Invoice, error) {
+func ExecutePurchaseCOD(userID int, orderID string) (models.Invoice, error) {
 	ok, err := repository.CartExist(userID)
 	if err != nil {
 		return models.Invoice{}, err
@@ -63,17 +63,25 @@ func ExecutePurchaseCOD(userID int, addressID int) (models.Invoice, error) {
 	if !ok {
 		return models.Invoice{}, errors.New("cart doesnt exist")
 	}
-	cartDetails, err := repository.DisplayCart(userID)
+	
+	err=repository.EmptyCart(userID)
+	if err!=nil{
+		return models.Invoice{},err
+	}
+	
+	address, err := repository.GetAddressFromOrderId(orderID)
 	if err != nil {
 		return models.Invoice{}, err
 	}
-	addresses, err := repository.GetAllAddress(userID)
+	orderDetails, err := repository.GetOrderDetailOfAproduct(orderID)
 	if err != nil {
 		return models.Invoice{}, err
 	}
+
 	Invoice := models.Invoice{
-		Cart:        cartDetails,
-		AddressInfo: addresses,
+		OrderDetails: orderDetails,
+		AddressInfo:  address,
+		
 	}
 	return Invoice, nil
 

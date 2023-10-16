@@ -22,6 +22,17 @@ func CheckUserAvailability(email string) bool {
 	return count > 0
 
 }
+func CheckUserAvailabilityWithUserID(userId int) bool {
+
+	var count int
+
+	if err := database.DB.Raw("select count(*) from users where id=?", userId).Scan(&count).Error; err != nil {
+		return false
+	}
+	// if count is greater than 0 that means the user already exist
+	return count > 0
+
+}
 func CheckUserExistsByEmail(email string) (*domain.User, error) {
 	var user domain.User
 	result := database.DB.Where(&domain.User{Email: email}).First(&user)
@@ -76,6 +87,17 @@ func GetAllAddress(userId int) (models.AddressInfoResponse, error) {
 		return models.AddressInfoResponse{}, err
 	}
 	fmt.Println(addressInfoResponse, "HEyy")
+	return addressInfoResponse, nil
+}
+func GetAddressFromOrderId(orderId string) (models.AddressInfoResponse, error) {
+	var addressInfoResponse models.AddressInfoResponse
+	var addressId int
+	if err := database.DB.Raw("select address_id from orders where order_id =?", orderId).Scan(&addressId).Error; err != nil {
+		return models.AddressInfoResponse{}, errors.New("first in orders")
+	}
+	if err := database.DB.Raw("select * from addresses where id=?", addressId).Scan(&addressInfoResponse).Error; err != nil {
+		return models.AddressInfoResponse{}, errors.New("second  in address")
+	}
 	return addressInfoResponse, nil
 }
 
@@ -153,10 +175,7 @@ func UpdateUserPassword(password string, userID int) error {
 	return nil
 }
 
-
 func GetAllAddresses(userID int) ([]models.AddressInfoResponse, error) {
-
-
 
 	var addressResponse []models.AddressInfoResponse
 	err := database.DB.Raw(`select * from addresses where user_id = $1`, userID).Scan(&addressResponse).Error

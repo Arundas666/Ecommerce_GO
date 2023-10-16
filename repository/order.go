@@ -38,6 +38,14 @@ func GetOrderDetail(orderId int) (models.OrderDetails, error) {
 	}
 	return OrderDetails, nil
 }
+func GetOrderDetailOfAproduct(orderId string) (models.OrderDetails, error) {
+	var OrderDetails models.OrderDetails
+
+	if err := database.DB.Raw("select order_id,final_price,shipment_status,payment_status from orders where order_id = ?", orderId).Scan(&OrderDetails).Error; err != nil {
+		return models.OrderDetails{}, err
+	}
+	return OrderDetails, nil
+}
 
 func UserOrderRelationship(orderID string, userID int) (int, error) {
 

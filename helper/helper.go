@@ -43,6 +43,7 @@ func GenerateTokenUsers(userID int, userEmail string, expirationTime time.Time) 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString([]byte(cfg.KEY))
 
+	// tokenString, err:=jwt.NewWithClaims(jwt.SigningMethodHS256, &AuthCustomClaims{Id:    userID, Email: userEmail,StandardClaims: jwt.StandardClaims{ExpiresAt: expirationTime.Unix(),IssuedAt:  time.Now().Unix(),},}).SignedString([]byte(cfg.KEY))
 	if err != nil {
 		return "", err
 	}

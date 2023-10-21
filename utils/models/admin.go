@@ -48,5 +48,12 @@ type DashboardOrder struct {
 type CompleteAdminDashboard struct {
 	DashboardUser    DashboardUser
 	DashBoardProduct DashBoardProduct
-	DashboardOrder	DashboardOrder
+	DashboardOrder   DashboardOrder
+}
+type SalesReport struct {
+	TotalSales      float64
+	TotalOrders     int
+	CompletedOrders int
+	PendingOrders   int
+	TrendingProduct string
 }

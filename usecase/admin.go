@@ -131,3 +131,15 @@ func CancelOrderFromAdminSide(orderID string) error {
 	return nil
 
 }
+
+func  FilteredSalesReport(timePeriod string) (models.SalesReport, error) {
+
+	startTime, endTime := helper.GetTimeFromPeriod(timePeriod)
+
+	salesReport, err := repository.FilteredSalesReport(startTime, endTime)
+	if err != nil {
+		return models.SalesReport{}, err
+	}
+	return salesReport, nil
+}
+

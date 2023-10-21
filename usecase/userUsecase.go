@@ -128,7 +128,7 @@ func UserDetails(userID int) (models.UsersProfileDetails, error) {
 func UpdateUserDetails(userDetails models.UsersProfileDetails, userID int) (models.UsersProfileDetails, error) {
 	userExist := repository.CheckUserAvailabilityWithUserID(userID)
 
-	// update with email that does not already exist
+	
 
 	if !userExist {
 		return models.UsersProfileDetails{}, errors.New("user doesnt exist")
@@ -139,6 +139,7 @@ func UpdateUserDetails(userDetails models.UsersProfileDetails, userID int) (mode
 	}
 	if userDetails.Firstname != "" {
 		repository.UpdateFirstName(userDetails.Firstname, userID)
+		
 	}
 	if userDetails.Firstname != "" {
 		repository.UpdateLastName(userDetails.Lastname, userID)

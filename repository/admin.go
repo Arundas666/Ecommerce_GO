@@ -4,6 +4,8 @@ import (
 	database "firstpro/db"
 	"firstpro/domain"
 	"firstpro/utils/models"
+	"fmt"
+	"time"
 )
 
 func LoginHandler(adminDetails models.AdminLogin) (domain.Admin, error) {
@@ -77,3 +79,41 @@ func DashBoardOrder() (models.DashboardOrder, error) {
 	return orderDetails, nil
 }
 
+func FilteredSalesReport(startTime time.Time, endTime time.Time) (models.SalesReport, error) {
+
+	var salesReport models.SalesReport
+
+	result := database.DB.Raw("select coalesce(sum(final_price),0) from orders where payment_status = 'paid' and approval = true and created_at >= ? and created_at <= ?", startTime, endTime).Scan(&salesReport.TotalSales)
+	if result.Error != nil {
+		return models.SalesReport{}, result.Error
+	}
+
+	result = database.DB.Raw("select count(*) from orders").Scan(&salesReport.TotalOrders)
+	if result.Error != nil {
+		return models.SalesReport{}, result.Error
+	}
+
+	result = database.DB.Raw("select count(*) from orders where payment_status = 'paid' and approval = true and  created_at >= ? and created_at <= ?", startTime, endTime).Scan(&salesReport.CompletedOrders)
+	if result.Error != nil {
+		return models.SalesReport{}, result.Error
+	}
+
+	result = database.DB.Raw("select count(*) from orders where shipment_status = 'processing' and approval = false and  created_at >= ? and created_at <= ?", startTime, endTime).Scan(&salesReport.PendingOrders)
+	if result.Error != nil {
+		return models.SalesReport{}, result.Error
+	}
+
+	var productID int
+	result = database.DB.Raw("select product_id from order_items group by product_id order by sum(quantity) desc limit 1").Scan(&productID)
+	if result.Error != nil {
+		return models.SalesReport{}, result.Error
+	}
+	
+	result = database.DB.Raw("select name from products where id = ?", productID).Scan(&salesReport.TrendingProduct)
+	if result.Error != nil {
+		return models.SalesReport{}, result.Error
+	}
+
+	fmt.Println(salesReport.TrendingProduct)
+	return salesReport, nil
+}

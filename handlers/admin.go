@@ -80,3 +80,19 @@ func  CancelOrderFromAdminSide(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
+func  FilteredSalesReport(c *gin.Context) {
+
+	timePeriod := c.Param("period")
+	salesReport, err := usecase.FilteredSalesReport(timePeriod)
+	if err != nil {
+		errorRes := response.ClientResponse(http.StatusInternalServerError, "sales report could not be retrieved", nil, err.Error())
+		c.JSON(http.StatusInternalServerError, errorRes)
+		return
+		
+	}
+
+	successRes := response.ClientResponse(http.StatusOK, "sales report retrieved successfully", salesReport, nil)
+	c.JSON(http.StatusOK, successRes)
+
+}

@@ -53,11 +53,14 @@ type AddressInfo struct {
 	City      string `json:"city"`
 }
 type UsersProfileDetails struct {
-	Firstname string `json:"firstname" `
+	Firstname string `json:"firstname"  `
 	Lastname  string `json:"lastname" `
 	Email     string `json:"email" `
 	Phone     string `json:"phone" `
 	// ReferralCode string `json:"referral_code" binding:"required"`
+
+
+
 }
 
 type UpdatePassword struct {

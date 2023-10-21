@@ -126,7 +126,7 @@ func CheckOrderID(orderID string) (bool, error) {
 	return count > 0, nil
 
 }
-func  ApproveOrder(orderID string) error {
+func ApproveOrder(orderID string) error {
 
 	err := database.DB.Exec("update orders set shipment_status = 'order placed',approval = true where order_id = ?", orderID).Error
 	if err != nil {
@@ -135,3 +135,16 @@ func  ApproveOrder(orderID string) error {
 	return nil
 }
 
+func GetOrderDetailsByOrderId(orderID string) (models.CombinedOrderDetails, error) {
+
+	var orderDetails models.CombinedOrderDetails
+
+	err := database.DB.Raw("select orders.order_id,orders.final_price,orders.shipment_status,orders.payment_status,users.firstname,users.email,users.phone,addresses.house_name,addresses.state,addresses.pin,addresses.street,addresses.city from orders inner join users on orders.user_id = users.id inner join addresses on users.id = addresses.user_id where order_id = ?", orderID).Scan(&orderDetails).Error
+
+	
+	if err != nil {
+		return models.CombinedOrderDetails{}, nil
+	}
+
+	return orderDetails, nil
+}

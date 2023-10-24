@@ -28,11 +28,11 @@ func ShippingCoordinatorLogin(c *gin.Context) { // login handler for the admin
 
 }
 
-func UpdateShipmentStatus(c *gin.Context) {
 
+
+func UpdateShipmentStatus(c *gin.Context) {
 	orderID := c.Query("id")
 	shipment_status := c.Query("shipment-status")
-
 	err := usecase.UpdateShipmentStatus(shipment_status, orderID)
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusInternalServerError, "Cannot update shipment status", nil, err.Error())

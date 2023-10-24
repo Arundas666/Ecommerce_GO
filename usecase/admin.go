@@ -52,6 +52,10 @@ func LoginHandler(adminDetails models.AdminLogin) (domain.TokenAdmin, error) {
 
 func DashBoard() (models.CompleteAdminDashboard, error) {
 
+	totalRevenue, err := repository.TotalRevenue()
+	if err != nil {
+		return models.CompleteAdminDashboard{}, err
+	}
 	userDetails, err := repository.DashboardUserDetails()
 	if err != nil {
 		return models.CompleteAdminDashboard{}, err
@@ -67,7 +71,7 @@ func DashBoard() (models.CompleteAdminDashboard, error) {
 	}
 
 	return models.CompleteAdminDashboard{
-
+		DashboardRevenue: totalRevenue,
 		DashboardUser:    userDetails,
 		DashBoardProduct: productDetails,
 		DashboardOrder:   orderDetails,

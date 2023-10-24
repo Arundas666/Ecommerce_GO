@@ -74,12 +74,14 @@ func PlaceOrder(c *gin.Context) {
 	fmt.Println("payment is ", paymentMethod, "order id is is ", orderId)
 	
 	if paymentMethod == "cash_on_delivery" {
+		
 		Invoice, err := usecase.ExecutePurchaseCOD(userId, orderId)
 		if err != nil {
 			errorRes := response.ClientResponse(http.StatusInternalServerError, "error in making cod ", nil, err.Error())
 			c.JSON(http.StatusInternalServerError, errorRes)
 			return
 		}
+
 		successRes := response.ClientResponse(http.StatusOK, "Placed Order with cash on delivery", Invoice, nil)
 		c.JSON(http.StatusOK, successRes)
 	}

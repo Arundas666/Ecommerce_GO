@@ -3,6 +3,7 @@ package repository
 import (
 	database "firstpro/db"
 	"firstpro/domain"
+	"firstpro/helper"
 	"firstpro/utils/models"
 	"fmt"
 	"time"
@@ -108,7 +109,7 @@ func FilteredSalesReport(startTime time.Time, endTime time.Time) (models.SalesRe
 	if result.Error != nil {
 		return models.SalesReport{}, result.Error
 	}
-	
+
 	result = database.DB.Raw("select name from products where id = ?", productID).Scan(&salesReport.TrendingProduct)
 	if result.Error != nil {
 		return models.SalesReport{}, result.Error
@@ -116,4 +117,29 @@ func FilteredSalesReport(startTime time.Time, endTime time.Time) (models.SalesRe
 
 	fmt.Println(salesReport.TrendingProduct)
 	return salesReport, nil
+}
+
+func TotalRevenue() (models.DashboardRevenue, error) {
+
+	var revenueDetails models.DashboardRevenue
+	startTime := time.Now().AddDate(0, 0, -1)
+	endTime := time.Now()
+	err := database.DB.Raw("select coalesce(sum(final_price),0) from orders where payment_status = 'paid' and approval = true and created_at >= ? and created_at <= ?", startTime, endTime).Scan(&revenueDetails.TodayRevenue).Error
+	if err != nil {
+		return models.DashboardRevenue{}, nil
+	}
+
+	startTime, endTime = helper.GetTimeFromPeriod("month")
+	err = database.DB.Raw("select coalesce(sum(final_price),0) from orders where payment_status = 'paid' and approval = true and created_at >= ? and created_at <= ?", startTime, endTime).Scan(&revenueDetails.MonthRevenue).Error
+	if err != nil {
+		return models.DashboardRevenue{}, nil
+	}
+
+	startTime, endTime = helper.GetTimeFromPeriod("year")
+	err = database.DB.Raw("select coalesce(sum(final_price),0) from orders where payment_status = 'paid' and approval = true and created_at >= ? and created_at <= ?", startTime, endTime).Scan(&revenueDetails.YearRevenue).Error
+	if err != nil {
+		return models.DashboardRevenue{}, nil
+	}
+
+	return revenueDetails, nil
 }

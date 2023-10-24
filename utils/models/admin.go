@@ -49,6 +49,7 @@ type CompleteAdminDashboard struct {
 	DashboardUser    DashboardUser
 	DashBoardProduct DashBoardProduct
 	DashboardOrder   DashboardOrder
+	DashboardRevenue DashboardRevenue
 }
 type SalesReport struct {
 	TotalSales      float64
@@ -56,4 +57,10 @@ type SalesReport struct {
 	CompletedOrders int
 	PendingOrders   int
 	TrendingProduct string
+}
+
+type DashboardRevenue struct {
+	TodayRevenue float64
+	MonthRevenue float64
+	YearRevenue  float64
 }

@@ -75,44 +75,34 @@ func CancelOrders(orderID string) error {
 		}
 	}
 	return nil
-
 }
 func GetProductDetailsFromOrders(orderID string) ([]models.OrderProducts, error) {
-
 	var orderProductDetails []models.OrderProducts
 	if err := database.DB.Raw("select product_id,quantity from order_items where order_id = ?", orderID).Scan(&orderProductDetails).Error; err != nil {
 		return []models.OrderProducts{}, err
 	}
-
 	return orderProductDetails, nil
 }
 func GetShipmentStatus(orderID string) (string, error) {
-
 	var shipmentStatus string
 	err := database.DB.Raw("select shipment_status from orders where order_id = ?", orderID).Scan(&shipmentStatus).Error
 	if err != nil {
 		return "", err
 	}
-
 	return shipmentStatus, nil
-
 }
 func UpdateQuantityOfProduct(orderProducts []models.OrderProducts) error {
-
 	for _, od := range orderProducts {
-
 		var quantity int
 		if err := database.DB.Raw("select quantity from products where id = ?", od.ProductId).Scan(&quantity).Error; err != nil {
 			return err
 		}
-
 		od.Quantity += quantity
 		if err := database.DB.Exec("update products set quantity = ? where id = ?", od.Quantity, od.ProductId).Error; err != nil {
 			return err
 		}
 	}
 	return nil
-
 }
 
 func CheckOrderID(orderID string) (bool, error) {
@@ -122,7 +112,6 @@ func CheckOrderID(orderID string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-
 	return count > 0, nil
 
 }

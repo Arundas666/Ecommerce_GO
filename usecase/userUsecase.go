@@ -7,6 +7,7 @@ import (
 	"firstpro/repository"
 	"firstpro/utils/models"
 	"fmt"
+	"net/mail"
 
 	"github.com/jinzhu/copier"
 	"golang.org/x/crypto/bcrypt"
@@ -14,6 +15,15 @@ import (
 
 func UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
 	fmt.Println(user, "👏")
+	_, err := mail.ParseAddress(user.Email)
+	if err != nil {
+		return &models.TokenUser{}, errors.New("invalid email format")
+	}
+
+	// Phone number validation
+	if len(user.Phone) != 10 {
+		return &models.TokenUser{}, errors.New("phone number should have 10 digits")
+	}
 	//check whether the user already exsist by looking the email and the phone number provided
 	email, err := repository.CheckUserExistsByEmail(user.Email)
 	fmt.Println(email, "🙌")
@@ -65,6 +75,10 @@ func UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
 }
 
 func UserLoginWithPassword(user models.LoginDetail) (*models.TokenUser, error) {
+	_, err := mail.ParseAddress(user.Email)
+	if err != nil {
+		return &models.TokenUser{}, errors.New("invalid email format")
+	}
 	email, err := repository.CheckUserExistsByEmail(user.Email)
 
 	if err != nil {
@@ -128,8 +142,6 @@ func UserDetails(userID int) (models.UsersProfileDetails, error) {
 func UpdateUserDetails(userDetails models.UsersProfileDetails, userID int) (models.UsersProfileDetails, error) {
 	userExist := repository.CheckUserAvailabilityWithUserID(userID)
 
-	
-
 	if !userExist {
 		return models.UsersProfileDetails{}, errors.New("user doesnt exist")
 	}
@@ -139,7 +151,7 @@ func UpdateUserDetails(userDetails models.UsersProfileDetails, userID int) (mode
 	}
 	if userDetails.Firstname != "" {
 		repository.UpdateFirstName(userDetails.Firstname, userID)
-		
+
 	}
 	if userDetails.Firstname != "" {
 		repository.UpdateLastName(userDetails.Lastname, userID)

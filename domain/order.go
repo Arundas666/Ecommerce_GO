@@ -2,8 +2,6 @@ package domain
 
 import (
 	"time"
-
-	
 )
 
 type PaymentMethod struct {
@@ -25,7 +23,7 @@ type Order struct {
 	PaymentMethod   PaymentMethod `json:"-" gorm:"foreignkey:PaymentMethodID"`
 	GrandTotal      float64       `json:"grand_total"`
 	FinalPrice      float64       `json:"discount_price"`
-	ShipmentStatus  string        `json:"status"`
+	ShipmentStatus  string        `json:"status" gorm:"default:pending"`
 	PaymentStatus   string        `json:"payment_status"`
 	Approval        bool          `json:"approval"`
 }
@@ -44,5 +42,3 @@ type OrderSuccessResponse struct {
 	OrderID        string `json:"order_id"`
 	ShipmentStatus string `json:"order_status"`
 }
-
-

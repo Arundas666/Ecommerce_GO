@@ -37,6 +37,8 @@ func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 	r.GET("/checkout", middleware.AuthMiddleware(), handlers.CheckOut)
 	r.GET("/place-order/:order_id/:payment", middleware.AuthMiddleware(), handlers.PlaceOrder)
 
+	r.POST("/crop", handlers.CropImage)
+
 	//PAYMENT
 
 	r.GET("/payment", handlers.MakePaymentRazorPay)
@@ -49,5 +51,9 @@ func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 	r.GET("/cancel-order/:order_id", middleware.AuthorizationMiddleware(), handlers.CancelOrderFromAdminSide)
 	r.GET("/sales-report/:period", handlers.FilteredSalesReport)
 
+	//shippingcoordinator
+	r.POST("/shipping-coordinator-login", handlers.ShippingCoordinatorLogin)
+	r.POST("/update-shipment-status", middleware.AuthorizationMiddlewareForShipmentCoordinator(), handlers.UpdateShipmentStatus)
 	return r
+
 }

@@ -36,7 +36,7 @@ func CancelOrders(orderId string, userId int) error {
 		return errors.New("item already delivered, cannot cancel")
 	}
 
-	if shipmentStatus == "pending" || shipmentStatus == "returned" || shipmentStatus == "return" {
+	if shipmentStatus == "returned" || shipmentStatus == "return" {
 		message := fmt.Sprint(shipmentStatus)
 		return errors.New("the order is in" + message + ", so no point in cancelling")
 	}

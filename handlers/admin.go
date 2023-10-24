@@ -4,7 +4,6 @@ import (
 	"firstpro/usecase"
 	"firstpro/utils/models"
 	"firstpro/utils/response"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,7 +12,7 @@ import (
 func LoginHandler(c *gin.Context) { // login handler for the admin
 
 	var adminDetails models.AdminLogin
-	fmt.Println("admin details is ", adminDetails)
+
 	if err := c.ShouldBindJSON(&adminDetails); err != nil {
 		errRes := response.ClientResponse(http.StatusBadRequest, "details not in correct format", nil, err.Error())
 		c.JSON(http.StatusBadRequest, errRes)
@@ -46,7 +45,6 @@ func DashBoard(c *gin.Context) {
 
 }
 
-
 func ApproveOrder(c *gin.Context) {
 
 	orderId := c.Param("order_id")
@@ -64,7 +62,7 @@ func ApproveOrder(c *gin.Context) {
 
 }
 
-func  CancelOrderFromAdminSide(c *gin.Context) {
+func CancelOrderFromAdminSide(c *gin.Context) {
 
 	orderID := c.Param("order_id")
 
@@ -81,7 +79,7 @@ func  CancelOrderFromAdminSide(c *gin.Context) {
 
 }
 
-func  FilteredSalesReport(c *gin.Context) {
+func FilteredSalesReport(c *gin.Context) {
 
 	timePeriod := c.Param("period")
 	salesReport, err := usecase.FilteredSalesReport(timePeriod)
@@ -89,7 +87,7 @@ func  FilteredSalesReport(c *gin.Context) {
 		errorRes := response.ClientResponse(http.StatusInternalServerError, "sales report could not be retrieved", nil, err.Error())
 		c.JSON(http.StatusInternalServerError, errorRes)
 		return
-		
+
 	}
 
 	successRes := response.ClientResponse(http.StatusOK, "sales report retrieved successfully", salesReport, nil)

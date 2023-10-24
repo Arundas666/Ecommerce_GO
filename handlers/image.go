@@ -35,7 +35,7 @@ func CropImage(c *gin.Context) {
 
 	croppedImage := imaging.Crop(inputImage, cropRect)
 
-	err = imaging.Save(croppedImage, "./images/arundas.jpg")
+	err = imaging.Save(croppedImage, imageUrl)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Failed to save image"})
 		return

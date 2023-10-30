@@ -9,6 +9,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+
+
+// @Summary Admin Login
+// @Description Login handler for admin
+// @Tags Admin Authentication
+// @Accept json
+// @Produce json
+// @Param  admin body models.AdminLogin true "Admin login details"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /admin/adminlogin [post]
 func LoginHandler(c *gin.Context) { // login handler for the admin
 
 	var adminDetails models.AdminLogin
@@ -31,6 +42,15 @@ func LoginHandler(c *gin.Context) { // login handler for the admin
 
 }
 
+// @Summary Admin Dashboard
+// @Description Get Amin Home Page with Complete Details
+// @Tags Admin Dash Board
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /admin/dashboard [GET]
 func DashBoard(c *gin.Context) {
 
 	adminDashBoard, err := usecase.DashBoard()
@@ -45,6 +65,16 @@ func DashBoard(c *gin.Context) {
 
 }
 
+// @Summary Approve Order
+// @Description Approve Order from admin side which is in processing state
+// @Tags Admin Order Management
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param id path string true "Order ID"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /admin/orders/approve-order/{id} [get]
 func ApproveOrder(c *gin.Context) {
 
 	orderId := c.Param("order_id")
@@ -62,6 +92,16 @@ func ApproveOrder(c *gin.Context) {
 
 }
 
+// @Summary Cancel Order Admin
+// @Description Cancel Order from admin side
+// @Tags Admin Order Management
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param id path string true "Order ID"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /admin/orders/cancel-order/{id} [get]
 func CancelOrderFromAdminSide(c *gin.Context) {
 
 	orderID := c.Param("order_id")
@@ -78,7 +118,16 @@ func CancelOrderFromAdminSide(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
-
+// @Summary Filtered Sales Report
+// @Description Get Filtered sales report by week, month and year
+// @Tags Admin Dash Board
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param period path string true "sales report"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /admin/sales-report/{period} [GET]
 func FilteredSalesReport(c *gin.Context) {
 
 	timePeriod := c.Param("period")

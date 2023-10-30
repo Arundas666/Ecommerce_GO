@@ -11,14 +11,12 @@ import (
 )
 
 func ShippingCoordinatorLogin(shippingCoodrinatorDetails models.ShippingCoordinatorLogin) (domain.TokenShippingCoordinator, error) {
-
 	// getting details of the admin based on the email provided
 	shippingCoordinatorCompareDetails, err := repository.ShippingCoordinatorLogin(shippingCoodrinatorDetails)
 	if err != nil {
 
 		return domain.TokenShippingCoordinator{}, err
 	}
-
 	// compare password from database and that provided from admins
 
 	err = bcrypt.CompareHashAndPassword([]byte(shippingCoordinatorCompareDetails.Password), []byte(shippingCoodrinatorDetails.Password))

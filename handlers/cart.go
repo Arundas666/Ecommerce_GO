@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"firstpro/usecase"
+	"firstpro/utils/models"
 	"firstpro/utils/response"
 
 	"net/http"
@@ -10,8 +11,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Add to Cart
+// @Description Add product to the cart using product id
+// @Tags User Cart
+// @Accept json
+// @Produce json
+// @Param id path string true "product-id"
+// @Security Bearer
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /cart/addtocart/{id} [post]
 func AddToCart(c *gin.Context) {
-	id := c.Param("id")
+	id := c.Param("product_id")
 
 	product_id, err := strconv.Atoi(id)
 	if err != nil {
@@ -23,7 +34,7 @@ func AddToCart(c *gin.Context) {
 	// user_ID := c.Request.Header.Get("User_id")
 
 	// user_id, _ := strconv.Atoi(user_ID)
-	
+
 	cartResponse, err := usecase.AddToCart(product_id, user_ID.(int))
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusBadGateway, "could not add product to the cart", nil, err.Error())
@@ -35,8 +46,18 @@ func AddToCart(c *gin.Context) {
 
 }
 
+// @Summary Remove product from cart
+// @Description Remove specified product of quantity 1 from cart using product id
+// @Tags User Cart
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param id path string true "Product id"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /cart/removefromcart/{id} [delete]
 func RemoveFromCart(c *gin.Context) {
-	id := c.Param("id")
+	id := c.Param("product_id")
 	product_id, err := strconv.Atoi(id)
 
 	if err != nil {
@@ -57,6 +78,15 @@ func RemoveFromCart(c *gin.Context) {
 
 }
 
+// @Summary Display Cart
+// @Description Display all products of the cart along with price of the product and grand total
+// @Tags User Cart
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /cart [get]
 func DisplayCart(c *gin.Context) {
 
 	userID, _ := c.Get("user_id")
@@ -70,6 +100,16 @@ func DisplayCart(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
+// @Summary Delete all Items Present inside the Cart
+// @Description Remove all product from cart
+// @Tags User Cart
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /cart [delete]
 func EmptyCart(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	cart, err := usecase.EmptyCart(userID.(int))
@@ -81,4 +121,36 @@ func EmptyCart(c *gin.Context) {
 	successRes := response.ClientResponse(http.StatusOK, "Cart emptied successfully", cart, nil)
 	c.JSON(http.StatusOK, successRes)
 
+}
+
+// @Summary Apply coupon on Checkout Section
+// @Description Add coupon to get discount on Checkout section
+// @Tags User Checkout
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param couponDetails body models.CouponAddUser true "Add coupon to order"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /coupon/apply [post]
+func  ApplyCoupon(c *gin.Context) {
+	userID, _ := c.Get("user_id")
+	var couponDetails models.CouponAddUser
+
+	if err := c.ShouldBindJSON(&couponDetails); err != nil {
+		errorRes := response.ClientResponse(http.StatusBadRequest, "Could not bind the coupon", nil, err.Error())
+		c.JSON(http.StatusBadRequest, errorRes)
+		return
+	}
+
+	err := usecase.ApplyCoupon(couponDetails.CouponName, userID.(int))
+
+	if err != nil {
+		errorRes := response.ClientResponse(http.StatusInternalServerError, "coupon could not be added", nil, err.Error())
+		c.JSON(http.StatusInternalServerError, errorRes)
+		return
+	}
+
+	successRes := response.ClientResponse(http.StatusCreated, "Coupon added successfully", nil, nil)
+	c.JSON(http.StatusCreated, successRes)
 }

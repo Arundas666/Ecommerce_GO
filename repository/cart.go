@@ -147,7 +147,9 @@ func CartAfterRemovalOfProduct(user_id int) ([]models.Cart, error) {
 	}
 	return cart, nil
 }
+
 func CartExist(userID int) (bool, error) {
+	
 	var count int
 	if err := database.DB.Raw("select count(*) from carts where user_id = ? ", userID).Scan(&count).Error; err != nil {
 		return false, err
@@ -162,5 +164,17 @@ func EmptyCart(userID int) error {
 	}
 
 	return nil
+
+}
+
+func GetTotalPriceFromCart(userID int) (float64, error) {
+
+	var totalPrice float64
+	err := database.DB.Raw("select COALESCE(SUM(total_price), 0) from carts where user_id = ?", userID).Scan(&totalPrice).Error
+	if err != nil {
+		return 0.0, err
+	}
+
+	return totalPrice, nil
 
 }

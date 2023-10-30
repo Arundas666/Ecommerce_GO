@@ -3,9 +3,9 @@ package models
 type SignupDetail struct {
 	FirstName string `json:"firstname"`
 	LastName  string `json:"lastname"`
-	Email     string `json:"email"`
+	Email     string `json:"email" validate:"email"`
+	Password  string `json:"password" validate:"min=8,max=20"`
 	Phone     string `json:"phone"`
-	Password  string `json:"password"`
 }
 
 type SignupDetailResponse struct {
@@ -21,8 +21,8 @@ type TokenUser struct {
 	RefreshToken string
 }
 type LoginDetail struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" validate:"email"`
+	Password string `json:"password" validate:"min=8,max=20"`
 }
 
 type UserLoginResponse struct {
@@ -58,8 +58,6 @@ type UsersProfileDetails struct {
 	Email     string `json:"email" `
 	Phone     string `json:"phone" `
 	// ReferralCode string `json:"referral_code" binding:"required"`
-
-
 
 }
 

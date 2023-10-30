@@ -8,7 +8,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
+func UserRoutes(r *gin.RouterGroup, db *gorm.DB) {
+
 	r.POST("/signup", handlers.Signup)
 	r.POST("/login-with-password", handlers.UserLoginWithPassword)
 
@@ -19,23 +20,6 @@ func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 
 	r.GET("/page/:page", handlers.ShowAllProducts)
 	r.POST("/filter", handlers.FilterCategory)
-	r.GET("/showaddress", middleware.AuthMiddleware(), handlers.GetAllAddress)
-	r.POST("/add-address", middleware.AuthMiddleware(), handlers.AddAddress)
-	r.GET("/show-user-details", middleware.AuthMiddleware(), handlers.UserDetails)
-	r.PATCH("/edit-user-profile", middleware.AuthMiddleware(), handlers.UpdateUserDetails)
-	r.POST("/update-password", middleware.AuthMiddleware(), handlers.UpdatePassword)
-
-	//CART
-	r.POST("/addtocart/:id", middleware.AuthMiddleware(), handlers.AddToCart)
-	r.DELETE("/removefromcart/:id", middleware.AuthMiddleware(), handlers.RemoveFromCart)
-	r.GET("/displaycart", middleware.AuthMiddleware(), handlers.DisplayCart)
-	r.DELETE("/emptycart", middleware.AuthMiddleware(), handlers.EmptyCart)
-
-	//ORDERS
-	r.GET("/orders/:page", middleware.AuthMiddleware(), handlers.GetOrderDetails)
-	r.PUT("/cancel-orders/:id", middleware.AuthMiddleware(), handlers.CancelOrder)
-	r.GET("/checkout", middleware.AuthMiddleware(), handlers.CheckOut)
-	r.GET("/place-order/:order_id/:payment", middleware.AuthMiddleware(), handlers.PlaceOrder)
 
 	r.POST("/crop", handlers.CropImage)
 
@@ -45,15 +29,31 @@ func UserRoutes(r *gin.Engine, db *gorm.DB) *gin.Engine {
 	r.GET("/payment-success", handlers.VerifyPayment)
 
 	//admin
-	r.POST("/adminlogin", handlers.LoginHandler)
-	r.GET("/dashboard", middleware.AuthorizationMiddleware(), handlers.DashBoard)
-	r.GET("/approve-order/:order_id", middleware.AuthorizationMiddleware(), handlers.ApproveOrder)
-	r.GET("/cancel-order/:order_id", middleware.AuthorizationMiddleware(), handlers.CancelOrderFromAdminSide)
-	r.GET("/sales-report/:period", handlers.FilteredSalesReport)
 
-	//shippingcoordinator
-	r.POST("/shipping-coordinator-login", handlers.ShippingCoordinatorLogin)
-	r.POST("/update-shipment-status", middleware.AuthorizationMiddlewareForShipmentCoordinator(), handlers.UpdateShipmentStatus)
-	return r
+	r.Group("/users")
+	r.Use(middleware.AuthMiddleware())
+	{
+
+		r.GET("/showaddress", handlers.GetAllAddress)
+		r.POST("/add-address", handlers.AddAddress)
+		r.GET("/show-user-details", handlers.UserDetails)
+		r.PATCH("/edit-user-profile", handlers.UpdateUserDetails)
+		r.POST("/update-password", handlers.UpdatePassword)
+
+		//CART
+		r.POST("/addtocart/:product_id", handlers.AddToCart)
+		r.DELETE("/removefromcart/:product_id", handlers.RemoveFromCart)
+		r.GET("/displaycart", handlers.DisplayCart)
+		r.DELETE("/emptycart", handlers.EmptyCart)
+
+		//ORDERS
+		r.GET("/orders/:page", handlers.GetOrderDetails)
+		r.PUT("/cancel-orders/:order_id", handlers.CancelOrder)
+		r.GET("/checkout", handlers.CheckOut)
+		r.GET("/place-order/:order_id/:payment", handlers.PlaceOrder)
+		r.POST("/apply-coupon", handlers.ApplyCoupon)
+		r.GET("/referral/apply", handlers.ApplyReferral)
+
+	}
 
 }

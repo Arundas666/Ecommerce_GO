@@ -2,6 +2,7 @@ package repository
 
 import (
 	database "firstpro/db"
+	"firstpro/domain"
 	"firstpro/utils/models"
 	"fmt"
 )
@@ -125,15 +126,48 @@ func ApproveOrder(orderID string) error {
 }
 
 func GetOrderDetailsByOrderId(orderID string) (models.CombinedOrderDetails, error) {
-
 	var orderDetails models.CombinedOrderDetails
-
 	err := database.DB.Raw("select orders.order_id,orders.final_price,orders.shipment_status,orders.payment_status,users.firstname,users.email,users.phone,addresses.house_name,addresses.state,addresses.pin,addresses.street,addresses.city from orders inner join users on orders.user_id = users.id inner join addresses on users.id = addresses.user_id where order_id = ?", orderID).Scan(&orderDetails).Error
-
-	
 	if err != nil {
 		return models.CombinedOrderDetails{}, nil
 	}
-
 	return orderDetails, nil
+}
+
+func CreateOrder(orderDetails domain.Order) error {
+	err := database.DB.Create(&orderDetails).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func AddOrderItems(orderItemDetails domain.OrderItem, UserID int, ProductID uint, Quantity float64) error {
+
+	// after creating the order delete all cart items and also update the quantity of the product
+	err := database.DB.Omit("id").Create(&orderItemDetails).Error
+	if err != nil {
+		return err
+	}
+
+	err = database.DB.Exec("delete from carts where user_id = ? and product_id = ?", UserID, ProductID).Error
+	if err != nil {
+		return err
+	}
+
+	err = database.DB.Exec("update products set quantity = quantity - ? where id = ?", Quantity, ProductID).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
+func GetBriefOrderDetails(orderID string) (domain.OrderSuccessResponse, error) {
+
+	var orderSuccessResponse domain.OrderSuccessResponse
+	database.DB.Raw("select order_id,shipment_status from orders where order_id = ?", orderID).Scan(&orderSuccessResponse)
+	return orderSuccessResponse, nil
+
 }

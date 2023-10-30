@@ -9,6 +9,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+
+// @Summary  OTP login
+// @Description Send OTP to Authenticate user
+// @Tags User OTP Login
+// @Accept json
+// @Produce json
+// @Param phone body models.OTPData true "phone number details"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /send-otp [post]
 func SendOTP(c *gin.Context) {
 	var phone models.OTPData
 
@@ -31,6 +41,17 @@ func SendOTP(c *gin.Context) {
 
 }
 
+
+
+// @Summary Verify OTP
+// @Description Verify OTP by passing the OTP in order to authenticate user
+// @Tags User OTP Login
+// @Accept json
+// @Produce json
+// @Param phone body models.VerifyData true "Verify OTP Details"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /verify-otp [post]
 func VerifyOTP(c *gin.Context) {
 
 	var code models.VerifyData

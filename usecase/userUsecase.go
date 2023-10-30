@@ -14,16 +14,16 @@ import (
 )
 
 func UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
-	fmt.Println(user, "👏")
-	_, err := mail.ParseAddress(user.Email)
-	if err != nil {
-		return &models.TokenUser{}, errors.New("invalid email format")
-	}
+	// fmt.Println(user, "👏")
+	// _, err := mail.ParseAddress(user.Email)
+	// if err != nil {
+	// 	return &models.TokenUser{}, errors.New("invalid email format")
+	// }
 
-	// Phone number validation
-	if len(user.Phone) != 10 {
-		return &models.TokenUser{}, errors.New("phone number should have 10 digits")
-	}
+	// // Phone number validation
+	// if len(user.Phone) != 10 {
+	// 	return &models.TokenUser{}, errors.New("phone number should have 10 digits")
+	// }
 	//check whether the user already exsist by looking the email and the phone number provided
 	email, err := repository.CheckUserExistsByEmail(user.Email)
 	fmt.Println(email, "🙌")
@@ -225,4 +225,42 @@ func Checkout(userID int) (models.CheckoutDetails, error) {
 		Grand_Total: grandTotal.TotalPrice,
 		Total_Price: grandTotal.FinalPrice,
 	}, nil
+}
+
+func ApplyReferral(userID int) (string, error) {
+	
+	exist, err := repository.CartExist(userID)
+
+	if err != nil {
+		return "", err
+	}
+
+	if !exist {
+		return "", errors.New("cart does not exist, can't apply offer")
+	}
+
+	referralAmount, totalCartAmount, err := repository.GetReferralAndTotalAmount(userID)
+	if err != nil {
+		return "", err
+	}
+
+	if totalCartAmount > referralAmount {
+		totalCartAmount = totalCartAmount - referralAmount
+		referralAmount = 0
+	} else {
+		referralAmount = referralAmount - totalCartAmount
+		totalCartAmount = 0
+	}
+
+	err = repository.UpdateSomethingBasedOnUserID("referrals", "referral_amount", referralAmount, userID)
+	if err != nil {
+		return "", err
+	}
+
+	err = repository.UpdateSomethingBasedOnUserID("carts", "total_price", totalCartAmount, userID)
+	if err != nil {
+		return "", err
+	}
+
+	return "", nil
 }

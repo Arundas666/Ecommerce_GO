@@ -9,6 +9,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Get Products Details to users
+// @Description Retrieve all product Details with pagination to users
+// @Tags User Product
+// @Accept json
+// @Produce json
+// @Param page path string true "Page number"
+// @Param count query string true "Page Count"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /products/page/{page} [get]
 func ShowAllProducts(c *gin.Context) {
 	pageStr := c.Param("page")
 	page, err := strconv.Atoi(pageStr)
@@ -37,6 +47,15 @@ func ShowAllProducts(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 }
 
+// @Summary Show Products of specified category
+// @Description Show all the Products belonging to a specified category
+// @Tags User Product
+// @Accept json
+// @Produce json
+// @Param data body map[string]int true "Category IDs and quantities"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /products/filter [post]
 func FilterCategory(c *gin.Context) {
 	var data map[string]int
 	if err := c.ShouldBindJSON(&data); err != nil {

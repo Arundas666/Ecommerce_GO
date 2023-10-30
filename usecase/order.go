@@ -63,12 +63,12 @@ func ExecutePurchaseCOD(userID int, orderID string) (models.Invoice, error) {
 	if !ok {
 		return models.Invoice{}, errors.New("cart doesnt exist")
 	}
-	
-	err=repository.EmptyCart(userID)
-	if err!=nil{
-		return models.Invoice{},err
+
+	err = repository.EmptyCart(userID)
+	if err != nil {
+		return models.Invoice{}, err
 	}
-	
+
 	address, err := repository.GetAddressFromOrderId(orderID)
 	if err != nil {
 		return models.Invoice{}, err
@@ -81,7 +81,6 @@ func ExecutePurchaseCOD(userID int, orderID string) (models.Invoice, error) {
 	Invoice := models.Invoice{
 		OrderDetails: orderDetails,
 		AddressInfo:  address,
-		
 	}
 	return Invoice, nil
 

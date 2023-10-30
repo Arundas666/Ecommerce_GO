@@ -198,3 +198,35 @@ func GetAllPaymentOption() ([]models.PaymentDetails, error) {
 	return paymentMethods, nil
 
 }
+
+
+func  GetReferralAndTotalAmount(userID int) (float64, float64, error) {
+
+	// first check whether the cart is empty -- do this for coupon too
+	var cartDetails struct {
+		ReferralAmount  float64
+		TotalCartAmount float64
+	}
+
+	err := database.DB.Raw("SELECT (SELECT referral_amount FROM referrals WHERE user_id = ?) AS referral_amount, COALESCE(SUM(total_price), 0) AS total_cart_amount FROM carts WHERE user_id = ?", userID, userID).Scan(&cartDetails).Error
+	if err != nil {
+
+		return 0.0, 0.0, err
+
+	}
+
+	return cartDetails.ReferralAmount, cartDetails.TotalCartAmount, nil
+
+}
+
+
+func UpdateSomethingBasedOnUserID(tableName string, columnName string, updateValue float64, userID int) error {
+
+	err := database.DB.Exec("update "+tableName+" set "+columnName+" = ? where user_id = ?", updateValue, userID).Error
+	if err != nil {
+		database.DB.Rollback()
+		return err
+	}
+	return nil
+
+}

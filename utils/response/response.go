@@ -14,5 +14,4 @@ func ClientResponse(statusCode int, message string, data interface{}, err interf
 		Data:       data,
 		Error:      err,
 	}
-
 }

@@ -8,18 +8,20 @@ import (
 	"firstpro/utils/models"
 	"fmt"
 	"net/mail"
+	"strconv"
 
+	"github.com/google/uuid"
 	"github.com/jinzhu/copier"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
+func  UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
+
 	// fmt.Println(user, "👏")
 	// _, err := mail.ParseAddress(user.Email)
 	// if err != nil {
 	// 	return &models.TokenUser{}, errors.New("invalid email format")
 	// }
-
 	// // Phone number validation
 	// if len(user.Phone) != 10 {
 	// 	return &models.TokenUser{}, errors.New("phone number should have 10 digits")
@@ -30,6 +32,7 @@ func UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
 	if err != nil {
 		return &models.TokenUser{}, errors.New("error with server")
 	}
+
 	if email != nil {
 		return &models.TokenUser{}, errors.New("user with this email is already exists")
 	}
@@ -50,21 +53,47 @@ func UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
 	}
 
 	user.Password = hashedPassword
+
 	//after hashing adding the user detail into the database and taking the added user detail to the userdata
 	userData, err := repository.UserSignup(user)
 	if err != nil {
 		return &models.TokenUser{}, errors.New("could not add the user ")
 	}
 
+	// create referral code for the user and send in details of referred id of user if it exist
+	id := uuid.New().ID()
+	str := strconv.Itoa(int(id))
+	userReferral := str[:8]
+	err = repository.CreateReferralEntry(userData, userReferral)
+	if err != nil {
+		return &models.TokenUser{}, err
+	}
+
+	if user.ReferralCode != "" {
+		// first check whether if a user with that referralCode exist
+		referredUserId, err := repository.GetUserIdFromReferrals(user.ReferralCode)
+		fmt.Println("ehy reffered user id is 👺", referredUserId)
+		if err != nil {
+			return &models.TokenUser{}, err
+		}
+		if referredUserId != 0 {
+			referralAmount := 100
+			err := repository.UpdateReferralAmount(float64(referralAmount), referredUserId, userData.Id)
+			if err != nil {
+				return &models.TokenUser{}, err
+			}
+		}
+	}
 	//creating a jwt token for the new user with the detail that has been stored in the database
 	accessToken, err := helper.GenerateAccessToken(userData)
 	if err != nil {
 		return &models.TokenUser{}, errors.New("counldnt create access token due to error")
 	}
-
 	refreshToken, err := helper.GenerateRefreshToken(userData)
 	if err != nil {
+
 		return &models.TokenUser{}, errors.New("counldnt create refresh token due to error")
+	
 	}
 
 	return &models.TokenUser{
@@ -228,7 +257,7 @@ func Checkout(userID int) (models.CheckoutDetails, error) {
 }
 
 func ApplyReferral(userID int) (string, error) {
-	
+
 	exist, err := repository.CartExist(userID)
 
 	if err != nil {

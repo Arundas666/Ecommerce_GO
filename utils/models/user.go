@@ -6,8 +6,8 @@ type SignupDetail struct {
 	Email     string `json:"email" validate:"email"`
 	Password  string `json:"password" validate:"min=8,max=20"`
 	Phone     string `json:"phone"`
+	ReferralCode    string `json:"referral_code"`
 }
-
 type SignupDetailResponse struct {
 	Id        int    `json:"id"`
 	Firstname string `json:"firstname"`

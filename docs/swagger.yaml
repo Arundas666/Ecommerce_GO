@@ -1,5 +1,20 @@
-basePath: /
 definitions:
+  models.AddCoupon:
+    properties:
+      coupon:
+        type: string
+      discount_percentage:
+        type: integer
+      minimum_price:
+        type: number
+      validity:
+        type: boolean
+    required:
+    - coupon
+    - discount_percentage
+    - minimum_price
+    - validity
+    type: object
   models.AddressInfo:
     properties:
       city:
@@ -32,6 +47,29 @@ definitions:
     - email
     - password
     type: object
+  models.CategoryOfferReceiver:
+    properties:
+      category_id:
+        type: integer
+      discount_percentage:
+        type: integer
+      offer_limit:
+        type: integer
+      offer_name:
+        type: string
+    required:
+    - category_id
+    - discount_percentage
+    - offer_limit
+    - offer_name
+    type: object
+  models.CouponAddUser:
+    properties:
+      coupon_name:
+        type: string
+    required:
+    - coupon_name
+    type: object
   models.LoginDetail:
     properties:
       email:
@@ -48,6 +86,22 @@ definitions:
     required:
     - phone
     type: object
+  models.ProductOfferReceiver:
+    properties:
+      discount_percentage:
+        type: integer
+      offer_limit:
+        type: integer
+      offer_name:
+        type: string
+      product_id:
+        type: integer
+    required:
+    - discount_percentage
+    - offer_limit
+    - offer_name
+    - product_id
+    type: object
   models.SignupDetail:
     properties:
       email:
@@ -61,6 +115,8 @@ definitions:
         minLength: 8
         type: string
       phone:
+        type: string
+      referral_code:
         type: string
     type: object
   models.UpdatePassword:
@@ -95,13 +151,9 @@ definitions:
       status_code:
         type: integer
     type: object
-host: www.zogfestiv.store
 info:
   contact: {}
   description: API for ecommerce website
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
   title: Zog_festiv eCommerce API
   version: "1.0"
 paths:
@@ -180,6 +232,140 @@ paths:
       summary: Admin Dashboard
       tags:
       - Admin Dash Board
+  /admin/offer/category-offer:
+    post:
+      consumes:
+      - application/json
+      description: Add a new Offer for a Category by specifying a limit
+      parameters:
+      - description: Add new Category Offer
+        in: body
+        name: coupon
+        required: true
+        schema:
+          $ref: '#/definitions/models.CategoryOfferReceiver'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Add  Category Offer
+      tags:
+      - Admin Offer Management
+  /admin/offer/coupons:
+    get:
+      consumes:
+      - application/json
+      description: Get Available coupon details for admin side
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Get coupon details
+      tags:
+      - Admin Offer Management
+  /admin/offer/coupons/addcoupon:
+    post:
+      consumes:
+      - application/json
+      description: Add A new Coupon which can be used by the users from the checkout
+        section
+      parameters:
+      - description: Add new Coupon
+        in: body
+        name: coupon
+        required: true
+        schema:
+          $ref: '#/definitions/models.AddCoupon'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Add  a new coupon by Admin
+      tags:
+      - Admin Offer Management
+  /admin/offer/coupons/expire/{id}:
+    patch:
+      consumes:
+      - application/json
+      description: Expire Coupon by admin which are already present by passing coupon
+        id
+      parameters:
+      - description: Coupon id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Expire Coupon
+      tags:
+      - Admin Offer Management
+  /admin/offer/product-offer:
+    post:
+      consumes:
+      - application/json
+      description: Add a new Offer for a product by specifying a limit
+      parameters:
+      - description: Add new Product Offer
+        in: body
+        name: coupon
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProductOfferReceiver'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Add  Product Offer
+      tags:
+      - Admin Offer Management
   /admin/orders/approve-order/{id}:
     get:
       consumes:
@@ -363,6 +549,34 @@ paths:
       summary: Remove product from cart
       tags:
       - User Cart
+  /coupon/apply:
+    post:
+      consumes:
+      - application/json
+      description: Add coupon to get discount on Checkout section
+      parameters:
+      - description: Add coupon to order
+        in: body
+        name: couponDetails
+        required: true
+        schema:
+          $ref: '#/definitions/models.CouponAddUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Apply coupon on Checkout Section
+      tags:
+      - User Checkout
   /login:
     post:
       consumes:
@@ -447,6 +661,27 @@ paths:
       summary: Get Products Details to users
       tags:
       - User Product
+  /referral/apply:
+    get:
+      consumes:
+      - application/json
+      description: Apply referrals amount to order
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Apply referrals
+      tags:
+      - User Checkout
   /send-otp:
     post:
       consumes:
@@ -633,8 +868,6 @@ paths:
       summary: Verify OTP
       tags:
       - User OTP Login
-schemes:
-- http
 securityDefinitions:
   JWT:
     in: header

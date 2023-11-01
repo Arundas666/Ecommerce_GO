@@ -38,6 +38,7 @@ func Signup(c *gin.Context) {
 		return
 	}
 
+
 	//creating a newuser signup with the given deatil passing into the bussiness logic layer
 	userCreated, err := usecase.UserSignup(userSignup)
 

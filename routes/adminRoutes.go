@@ -8,7 +8,6 @@ import (
 )
 
 func AdminRoutes(r *gin.RouterGroup) {
-
 	r.POST("/adminlogin", handlers.LoginHandler)
 	r.GET("/dashboard", middleware.AuthorizationMiddleware(), handlers.DashBoard)
 	r.GET("/approve-order/:order_id", middleware.AuthorizationMiddleware(), handlers.ApproveOrder)

@@ -33,7 +33,8 @@ func CheckUserAvailabilityWithUserID(userId int) bool {
 	return count > 0
 
 }
-func CheckUserExistsByEmail(email string) (*domain.User, error) {
+
+func CheckUserExistsByEmail(email string)(*domain.User, error) {
 	var user domain.User
 	result := database.DB.Where(&domain.User{Email: email}).First(&user)
 	if result.Error != nil {
@@ -199,8 +200,7 @@ func GetAllPaymentOption() ([]models.PaymentDetails, error) {
 
 }
 
-
-func  GetReferralAndTotalAmount(userID int) (float64, float64, error) {
+func GetReferralAndTotalAmount(userID int) (float64, float64, error) {
 
 	// first check whether the cart is empty -- do this for coupon too
 	var cartDetails struct {
@@ -219,7 +219,6 @@ func  GetReferralAndTotalAmount(userID int) (float64, float64, error) {
 
 }
 
-
 func UpdateSomethingBasedOnUserID(tableName string, columnName string, updateValue float64, userID int) error {
 
 	err := database.DB.Exec("update "+tableName+" set "+columnName+" = ? where user_id = ?", updateValue, userID).Error
@@ -227,6 +226,45 @@ func UpdateSomethingBasedOnUserID(tableName string, columnName string, updateVal
 		database.DB.Rollback()
 		return err
 	}
+	return nil
+
+}
+
+func CreateReferralEntry(userDetails models.SignupDetailResponse, userReferral string) error {
+
+	err := database.DB.Exec("insert into referrals (user_id,referral_code,referral_amount) values (?,?,?)", userDetails.Id, userReferral, 0).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
+func GetUserIdFromReferrals(ReferralCode string) (int, error) {
+
+	var referredUserId int
+	err := database.DB.Raw("select user_id from referrals where referral_code = ?", ReferralCode).Scan(&referredUserId).Error
+	if err != nil {
+		return 0, nil
+	}
+
+	return referredUserId, nil
+}
+
+func UpdateReferralAmount(referralAmount float64, referredUserId int, currentUserID int) error {
+
+	err := database.DB.Exec("update referrals set referral_amount = ?,referred_user_id = ? where user_id = ? ", referralAmount, referredUserId, currentUserID).Error
+	if err != nil {
+		return err
+	}
+
+	// find the current amount in referred users referral table and add 100 with that
+	err = database.DB.Exec("update referrals set referral_amount = referral_amount + ? where user_id = ? ", referralAmount, referredUserId).Error
+	if err != nil {
+		return err
+	}
+
 	return nil
 
 }

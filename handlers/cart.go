@@ -132,8 +132,8 @@ func EmptyCart(c *gin.Context) {
 // @Param couponDetails body models.CouponAddUser true "Add coupon to order"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /coupon/apply [post]
-func  ApplyCoupon(c *gin.Context) {
+// @Router /apply-coupon [post]
+func ApplyCoupon(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	var couponDetails models.CouponAddUser
 

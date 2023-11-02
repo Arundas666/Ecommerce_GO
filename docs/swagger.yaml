@@ -452,6 +452,34 @@ paths:
       summary: Filtered Sales Report
       tags:
       - Admin Dash Board
+  /apply-coupon:
+    post:
+      consumes:
+      - application/json
+      description: Add coupon to get discount on Checkout section
+      parameters:
+      - description: Add coupon to order
+        in: body
+        name: couponDetails
+        required: true
+        schema:
+          $ref: '#/definitions/models.CouponAddUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Apply coupon on Checkout Section
+      tags:
+      - User Checkout
   /cart:
     delete:
       consumes:
@@ -549,34 +577,6 @@ paths:
       summary: Remove product from cart
       tags:
       - User Cart
-  /coupon/apply:
-    post:
-      consumes:
-      - application/json
-      description: Add coupon to get discount on Checkout section
-      parameters:
-      - description: Add coupon to order
-        in: body
-        name: couponDetails
-        required: true
-        schema:
-          $ref: '#/definitions/models.CouponAddUser'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - Bearer: []
-      summary: Apply coupon on Checkout Section
-      tags:
-      - User Checkout
   /login:
     post:
       consumes:

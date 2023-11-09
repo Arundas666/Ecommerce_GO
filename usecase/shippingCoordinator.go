@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"errors"
 	"firstpro/domain"
 	"firstpro/helper"
 	"firstpro/repository"
@@ -46,12 +47,15 @@ func ShippingCoordinatorLogin(shippingCoodrinatorDetails models.ShippingCoordina
 
 }
 
-func UpdateShipmentStatus(shipmentStatus string,orderId string)error{
-	err:=repository.UpdateShipmentStatus(orderId,shipmentStatus)
-	if err!=nil{
-		return  err
+func UpdateShipmentStatus(shipmentStatus string, orderId string) error {
+	if shipmentStatus == "" {
+		return errors.New("shipment status cannot be empty")
+	}
+
+	err := repository.UpdateShipmentStatus(orderId, shipmentStatus)
+	if err != nil {
+		return err
 	}
 	return nil
-
 
 }

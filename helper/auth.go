@@ -40,5 +40,4 @@ func ExtractUserIDFromToken(tokenString string) (int, string, error) {
 	}
 
 	return claims.Id, claims.Email, nil
-
 }

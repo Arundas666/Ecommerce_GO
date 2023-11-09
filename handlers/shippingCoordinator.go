@@ -28,12 +28,17 @@ func ShippingCoordinatorLogin(c *gin.Context) { // login handler for the admin
 
 }
 
-
-
 func UpdateShipmentStatus(c *gin.Context) {
 	orderID := c.Query("id")
-	shipment_status := c.Query("shipment-status")
-	err := usecase.UpdateShipmentStatus(shipment_status, orderID)
+	// shipment_status := c.Query("shipment-status")
+	var shipmentStatus models.Shipment_status
+	if err := c.ShouldBindJSON(&shipmentStatus); err != nil {
+		errRes := response.ClientResponse(http.StatusBadRequest, "fields provided are in wrong format", nil, err.Error())
+		c.JSON(http.StatusBadRequest, errRes)
+		return
+	}
+
+	err := usecase.UpdateShipmentStatus(shipmentStatus.Shipment_status, orderID)
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusInternalServerError, "Cannot update shipment status", nil, err.Error())
 		c.JSON(http.StatusInternalServerError, errRes)

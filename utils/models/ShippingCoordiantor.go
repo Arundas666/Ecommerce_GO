@@ -11,3 +11,6 @@ type ShippingCoordinatorDetailsResponse struct {
 	Lastname  string `json:"lastname" `
 	Email     string `json:"email" `
 }
+type Shipment_status struct {
+	Shipment_status string `json:"shipment_status" validate:"required" `
+}

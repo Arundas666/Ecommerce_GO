@@ -17,22 +17,11 @@ import (
 
 func  UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
 
-	// fmt.Println(user, "👏")
-	// _, err := mail.ParseAddress(user.Email)
-	// if err != nil {
-	// 	return &models.TokenUser{}, errors.New("invalid email format")
-	// }
-	// // Phone number validation
-	// if len(user.Phone) != 10 {
-	// 	return &models.TokenUser{}, errors.New("phone number should have 10 digits")
-	// }
-	//check whether the user already exsist by looking the email and the phone number provided
 	email, err := repository.CheckUserExistsByEmail(user.Email)
 	fmt.Println(email, "🙌")
 	if err != nil {
 		return &models.TokenUser{}, errors.New("error with server")
 	}
-
 	if email != nil {
 		return &models.TokenUser{}, errors.New("user with this email is already exists")
 	}

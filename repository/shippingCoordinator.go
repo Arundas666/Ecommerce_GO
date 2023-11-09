@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	database "firstpro/db"
 	"firstpro/domain"
 	"firstpro/utils/models"
@@ -22,7 +23,11 @@ func UpdateShipmentStatus(orderID string, shipmentStatus string) error {
 	shipmentStatusUpdater["4"] = "In Transit"
 	shipmentStatusUpdater["5"] = "Out for Delivery"
 	shipmentStatusUpdater["6"] = "Delivered"
-	err := database.DB.Exec("update orders set shipment_status = ? where order_id = ?", shipmentStatusUpdater[shipmentStatus], orderID).Error
+	var shipment_status, ok = shipmentStatusUpdater[shipmentStatus]
+	if !ok {
+		return errors.New("you entered invalid shipment status id")
+	}
+	err := database.DB.Exec("update orders set shipment_status = ? where order_id = ?", shipment_status, orderID).Error
 	if err != nil {
 		return err
 	}

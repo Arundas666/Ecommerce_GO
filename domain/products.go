@@ -18,6 +18,7 @@ type Products struct {
 	ProductStatus     string   `json:"product_status"`
 	IsDeleted         bool     `json:"is_deleted" gorm:"default:false"`
 }
+
 type Category struct {
 	ID           uint   `json:"id" gorm:"unique; not null"`
 	CategoryName string `json:"category_name"`

@@ -35,7 +35,7 @@ func UserRoutes(r *gin.RouterGroup, db *gorm.DB) {
 	r.Use(middleware.AuthMiddleware())
 	{
 
-		r.GET("/showaddress", handlers.GetAllAddress)
+		r.GET("/address", handlers.GetAllAddress)
 		r.POST("/address", handlers.AddAddress)
 		r.GET("/show-user-details", handlers.UserDetails)
 		r.PATCH("/edit-user-profile", handlers.UpdateUserDetails)
@@ -44,7 +44,7 @@ func UserRoutes(r *gin.RouterGroup, db *gorm.DB) {
 		//CART
 		r.POST("/addtocart/:product_id", handlers.AddToCart)
 		r.DELETE("/removefromcart/:product_id", handlers.RemoveFromCart)
-		r.GET("/displaycart", handlers.DisplayCart)
+		r.GET("/cart", handlers.DisplayCart)
 		r.DELETE("/emptycart", handlers.EmptyCart)
 
 		//ORDERS

@@ -72,7 +72,7 @@ func DashBoard(c *gin.Context) {
 // @Param id path string true "Order ID"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/orders/approve-order/{id} [get]
+// @Router /admin/approve-order/{id} [get]
 func ApproveOrder(c *gin.Context) {
 
 	orderId := c.Param("order_id")
@@ -99,7 +99,7 @@ func ApproveOrder(c *gin.Context) {
 // @Param id path string true "Order ID"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/orders/cancel-order/{id} [get]
+// @Router /admin/cancel-order/{id} [get]
 func CancelOrderFromAdminSide(c *gin.Context) {
 
 	orderID := c.Param("order_id")

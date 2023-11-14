@@ -83,6 +83,15 @@ func UserLoginWithPassword(c *gin.Context) {
 
 }
 
+// @Summary GetAddress for user
+// @Description getaddress functionality at the user side
+// @Tags User Profile
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /users/address [post]
 func GetAllAddress(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 
@@ -147,7 +156,7 @@ func AddAddress(c *gin.Context) {
 // @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /show-user-details [get]
+// @Router /users/show-user-details [get]
 func UserDetails(c *gin.Context) {
 
 	userID, _ := c.Get("user_id")
@@ -163,6 +172,16 @@ func UserDetails(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
+// @Summary Update User Details
+// @Description  Update User Details from User Profile
+// @Tags User Profile
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /users/edit-user-profile [get]
 func UpdateUserDetails(c *gin.Context) {
 
 	user_id, _ := c.Get("user_id")
@@ -218,6 +237,15 @@ func UpdatePassword(c *gin.Context) {
 	c.JSON(http.StatusCreated, successRes)
 }
 
+// @Summary Checkout page
+// @Description Checkout page of the order
+// @Tags User Checkout
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /users/checkout [get]
 func CheckOut(c *gin.Context) {
 
 	userID, _ := c.Get("user_id")
@@ -241,7 +269,7 @@ func CheckOut(c *gin.Context) {
 // @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /referral/apply [get]
+// @Router /users/referral/apply [get]
 func ApplyReferral(c *gin.Context) {
 
 	userID, _ := c.Get("user_id")

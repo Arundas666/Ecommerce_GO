@@ -19,7 +19,7 @@ import (
 // @Param coupon body models.AddCoupon true "Add new Coupon"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/offer/coupons/addcoupon [post]
+// @Router /admin/addcoupon [post]
 func AddCoupon(c *gin.Context) {
 
 	var coupon models.AddCoupon
@@ -47,7 +47,7 @@ func AddCoupon(c *gin.Context) {
 // @Param coupon body models.ProductOfferReceiver true "Add new Product Offer"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/offer/product-offer [post]
+// @Router /admin/product-offer [post]
 func AddProdcutOffer(c *gin.Context) {
 
 	var productOffer models.ProductOfferReceiver
@@ -80,7 +80,7 @@ func AddProdcutOffer(c *gin.Context) {
 // @Param coupon body models.CategoryOfferReceiver true "Add new Category Offer"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/offer/category-offer [post]
+// @Router /admin/add-category-offer [post]
 func AddCategoryOffer(c *gin.Context) {
 
 	var categoryOffer models.CategoryOfferReceiver
@@ -112,7 +112,7 @@ func AddCategoryOffer(c *gin.Context) {
 // @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/offer/coupons [get]
+// @Router /admin/coupons [get]
 func GetCoupon(c *gin.Context) {
 
 	coupons, err := usecase.GetCoupon()
@@ -135,7 +135,7 @@ func GetCoupon(c *gin.Context) {
 // @Param id path string true "Coupon id"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/offer/coupons/expire/{id} [patch]
+// @Router /admin/coupons/expire/{id} [patch]
 func ExpireCoupon(c *gin.Context) {
 
 	id := c.Param("id")

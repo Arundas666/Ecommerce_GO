@@ -96,7 +96,7 @@ func CancelOrder(c *gin.Context) {
 // @Param id path string true "Payment"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /admin/orders/approve-order/{id} [get]
+// @Router /users/place-order/{id}/{{payment}} [get]
 func PlaceOrder(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	userId := userID.(int)

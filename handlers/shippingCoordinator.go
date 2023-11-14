@@ -10,6 +10,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary Shipment Coordinator Login
+// @Description Login handler for ShipmnetCoordinator
+// @Tags Shipment coordinator
+// @Accept json
+// @Produce json
+// @Param  shipmentCoordinator body models.ShippingCoordinatorLogin true "Admin login details"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /shipping-coordinator-login [post]
 func ShippingCoordinatorLogin(c *gin.Context) { // login handler for the admin
 
 	var shippingCoordinatorDetails models.ShippingCoordinatorLogin
@@ -29,6 +38,17 @@ func ShippingCoordinatorLogin(c *gin.Context) { // login handler for the admin
 
 }
 
+// @Summary Update Shipment Status
+// @Description Update shipment status from shipment coordinator's side
+// @Tags Shipment Order Management
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param id path string true "Order ID"
+// @Param shipmentStatus  body models.ShipmentStatus true "Shipment status"
+// @Success 200 {object} response.Response{}
+// @Failure 500 {object} response.Response{}
+// @Router /admin/approve-order/{id} [put]
 func UpdateShipmentStatus(c *gin.Context) {
 	fmt.Println("Hey")
 	orderID := c.Query("id")

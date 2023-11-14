@@ -86,7 +86,7 @@ func RemoveFromCart(c *gin.Context) {
 // @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /cart [get]
+// @Router /users/cart [get]
 func DisplayCart(c *gin.Context) {
 
 	userID, _ := c.Get("user_id")
@@ -109,7 +109,7 @@ func DisplayCart(c *gin.Context) {
 // @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /cart [delete]
+// @Router /users/emptycart [delete]
 func EmptyCart(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	cart, err := usecase.EmptyCart(userID.(int))
@@ -132,7 +132,7 @@ func EmptyCart(c *gin.Context) {
 // @Param couponDetails body models.CouponAddUser true "Add coupon to order"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /apply-coupon [post]
+// @Router /users/apply-coupon [post]
 func ApplyCoupon(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 	var couponDetails models.CouponAddUser

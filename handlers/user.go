@@ -31,7 +31,7 @@ func Signup(c *gin.Context) {
 	}
 
 	// checking whether the data sent by the user has all the correct constraints specified by Users struct
-	err := validator.New().Struct(userSignup)
+	err := validator.New().Struct(&userSignup)
 	if err != nil {
 		errRes := response.ClientResponse(http.StatusBadRequest, "constraints not satisfied", nil, err.Error())
 		c.JSON(http.StatusBadRequest, errRes)
@@ -43,7 +43,7 @@ func Signup(c *gin.Context) {
 	userCreated, err := usecase.UserSignup(userSignup)
 
 	if err != nil {
-		errRes := response.ClientResponse(http.StatusBadRequest, "fields provided are in wrong formaaaaat", nil, err.Error())
+		errRes := response.ClientResponse(http.StatusBadRequest, "fields provided are in wrong format", nil, err.Error())
 		c.JSON(http.StatusBadRequest, errRes)
 		return
 	}

@@ -17,21 +17,21 @@ import (
 
 func  UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
 
-	email, err := repository.CheckUserExistsByEmail(user.Email)
-	fmt.Println(email, "🙌")
+	usersmatchingemail, err := repository.CheckUserExistsByEmail(user.Email)
+	
 	if err != nil {
 		return &models.TokenUser{}, errors.New("error with server")
 	}
-	if email != nil {
+	if usersmatchingemail != nil {
 		return &models.TokenUser{}, errors.New("user with this email is already exists")
 	}
 
-	phone, err := repository.CheckUserExistsByPhone(user.Phone)
+	usersmatchingphone, err := repository.CheckUserExistsByPhone(user.Phone)
 
 	if err != nil {
 		return &models.TokenUser{}, errors.New("error with server")
 	}
-	if phone != nil {
+	if usersmatchingphone != nil {
 		return &models.TokenUser{}, errors.New("user with this phone is already exists")
 	}
 

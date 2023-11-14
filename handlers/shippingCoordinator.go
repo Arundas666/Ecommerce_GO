@@ -4,6 +4,7 @@ import (
 	"firstpro/usecase"
 	"firstpro/utils/models"
 	"firstpro/utils/response"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -29,6 +30,7 @@ func ShippingCoordinatorLogin(c *gin.Context) { // login handler for the admin
 }
 
 func UpdateShipmentStatus(c *gin.Context) {
+	fmt.Println("Hey")
 	orderID := c.Query("id")
 	// shipment_status := c.Query("shipment-status")
 	var shipmentStatus models.Shipment_status

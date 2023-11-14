@@ -11,15 +11,15 @@ import (
 func UserRoutes(r *gin.RouterGroup, db *gorm.DB) {
 
 	r.POST("/signup", handlers.Signup)
-	r.POST("/login-with-password", handlers.UserLoginWithPassword)
+	r.POST("/login", handlers.UserLoginWithPassword)
 
 	r.POST("/send-otp", handlers.SendOTP)
 	r.POST("/verify-otp", handlers.VerifyOTP)
 
 	// r.GET("/", handlers.ShowAllProducts)
 
-	r.GET("/page/:page", handlers.ShowAllProducts)
-	r.POST("/filter", handlers.FilterCategory)
+	r.GET("/products/page/:page", handlers.ShowAllProducts)
+	r.POST("/products/filter", handlers.FilterCategory)
 
 	r.POST("/crop", handlers.CropImage)
 
@@ -31,11 +31,12 @@ func UserRoutes(r *gin.RouterGroup, db *gorm.DB) {
 	//admin
 
 	r.Group("/users")
+
 	r.Use(middleware.AuthMiddleware())
 	{
 
 		r.GET("/showaddress", handlers.GetAllAddress)
-		r.POST("/add-address", handlers.AddAddress)
+		r.POST("/address", handlers.AddAddress)
 		r.GET("/show-user-details", handlers.UserDetails)
 		r.PATCH("/edit-user-profile", handlers.UpdateUserDetails)
 		r.POST("/update-password", handlers.UpdatePassword)

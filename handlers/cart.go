@@ -20,7 +20,7 @@ import (
 // @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /cart/addtocart/{id} [post]
+// @Router /users/addtocart/{id} [post]
 func AddToCart(c *gin.Context) {
 	id := c.Param("product_id")
 
@@ -55,7 +55,7 @@ func AddToCart(c *gin.Context) {
 // @Param id path string true "Product id"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /cart/removefromcart/{id} [delete]
+// @Router /users/removefromcart/{id} [delete]
 func RemoveFromCart(c *gin.Context) {
 	id := c.Param("product_id")
 	product_id, err := strconv.Atoi(id)

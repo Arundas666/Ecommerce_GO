@@ -9,8 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
-
 // @Summary Admin Login
 // @Description Login handler for admin
 // @Tags Admin Authentication
@@ -118,6 +116,7 @@ func CancelOrderFromAdminSide(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
+
 // @Summary Filtered Sales Report
 // @Description Get Filtered sales report by week, month and year
 // @Tags Admin Dash Board

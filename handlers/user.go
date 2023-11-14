@@ -38,7 +38,6 @@ func Signup(c *gin.Context) {
 		return
 	}
 
-
 	//creating a newuser signup with the given deatil passing into the bussiness logic layer
 	userCreated, err := usecase.UserSignup(userSignup)
 
@@ -108,7 +107,7 @@ func GetAllAddress(c *gin.Context) {
 // @Param address body models.AddressInfo true "User Address Input"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /address [post]
+// @Router /users/address [post]
 func AddAddress(c *gin.Context) {
 	userID, _ := c.Get("user_id")
 
@@ -148,7 +147,7 @@ func AddAddress(c *gin.Context) {
 // @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
-// @Router /users [get]
+// @Router /show-user-details [get]
 func UserDetails(c *gin.Context) {
 
 	userID, _ := c.Get("user_id")

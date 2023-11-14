@@ -9,7 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
 // @Summary  OTP login
 // @Description Send OTP to Authenticate user
 // @Tags User OTP Login
@@ -40,8 +39,6 @@ func SendOTP(c *gin.Context) {
 	c.JSON(http.StatusOK, successRes)
 
 }
-
-
 
 // @Summary Verify OTP
 // @Description Verify OTP by passing the OTP in order to authenticate user

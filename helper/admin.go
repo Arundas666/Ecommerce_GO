@@ -16,8 +16,6 @@ type authCustomClaimsAdmin struct {
 	jwt.StandardClaims
 }
 
-
-
 func GetTimeFromPeriod(timePeriod string) (time.Time, time.Time) {
 
 	endDate := time.Now()
@@ -78,7 +76,7 @@ func ValidateToken(tokenString string) (*authCustomClaimsAdmin, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	if claims, ok := token.Claims.(*authCustomClaimsAdmin); ok && token.Valid {
 		return claims, nil
 	}

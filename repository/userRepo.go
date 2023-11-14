@@ -34,7 +34,7 @@ func CheckUserAvailabilityWithUserID(userId int) bool {
 
 }
 
-func CheckUserExistsByEmail(email string)(*domain.User, error) {
+func CheckUserExistsByEmail(email string) (*domain.User, error) {
 	var user domain.User
 	result := database.DB.Where(&domain.User{Email: email}).First(&user)
 	if result.Error != nil {

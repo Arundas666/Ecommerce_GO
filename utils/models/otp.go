@@ -1,7 +1,5 @@
 package models
 
-
-
 type OTPData struct {
 	PhoneNumber string `json:"phone" binding:"required" validate:"required"`
 }
@@ -18,4 +16,3 @@ type Email struct {
 type OTPCode struct {
 	Code string `json:"code" binding:"required" validate:"required"`
 }
-

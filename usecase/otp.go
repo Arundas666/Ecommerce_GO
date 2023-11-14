@@ -45,7 +45,7 @@ func VerifyOTP(code models.VerifyData) (models.TokenUser, error) {
 	if err != nil {
 		return models.TokenUser{}, err
 	}
-	
+
 	helper.TwilioSetup(cfg.ACCOUNTSID, cfg.AUTHTOKEN)
 	err = helper.TwilioVerifyOTP(cfg.SERVICESSID, code.Code, code.User.PhoneNumber)
 	if err != nil {

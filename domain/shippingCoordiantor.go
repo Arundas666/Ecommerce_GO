@@ -2,7 +2,6 @@ package domain
 
 import "firstpro/utils/models"
 
-
 type ShippingCoordinator struct {
 	ID        uint   `json:"id" gorm:"unique;not null"`
 	Firstname string `json:"firstname" gorm:"validate:required"`
@@ -12,5 +11,5 @@ type ShippingCoordinator struct {
 }
 type TokenShippingCoordinator struct {
 	ShippingCoordinator models.ShippingCoordinatorDetailsResponse
-	Token string
+	Token               string
 }

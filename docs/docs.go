@@ -15,51 +15,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/address": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "AddAddress functionality at the user side",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User Profile"
-                ],
-                "summary": "AddAddress functionality for user",
-                "parameters": [
-                    {
-                        "description": "User Address Input",
-                        "name": "address",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.AddressInfo"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/admin/adminlogin": {
             "post": {
                 "description": "Login handler for admin",
@@ -593,92 +548,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/cart/addtocart/{id}": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Add product to the cart using product id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User Cart"
-                ],
-                "summary": "Add to Cart",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "product-id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/cart/removefromcart/{id}": {
-            "delete": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Remove specified product of quantity 1 from cart using product id",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User Cart"
-                ],
-                "summary": "Remove product from cart",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Product id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/login": {
             "post": {
                 "description": "LogIn functionality at the user side",
@@ -881,6 +750,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/show-user-details": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "User Details from User Profile",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Profile"
+                ],
+                "summary": "User Details",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/signup": {
             "post": {
                 "description": "SignUp functionality at the user side",
@@ -921,14 +824,14 @@ const docTemplate = `{
                 }
             }
         },
-        "/users": {
-            "get": {
+        "/users/address": {
+            "post": {
                 "security": [
                     {
                         "Bearer": []
                     }
                 ],
-                "description": "User Details from User Profile",
+                "description": "AddAddress functionality at the user side",
                 "consumes": [
                     "application/json"
                 ],
@@ -938,7 +841,61 @@ const docTemplate = `{
                 "tags": [
                     "User Profile"
                 ],
-                "summary": "User Details",
+                "summary": "AddAddress functionality for user",
+                "parameters": [
+                    {
+                        "description": "User Address Input",
+                        "name": "address",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.AddressInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/addtocart/{id}": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Add product to the cart using product id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Cart"
+                ],
+                "summary": "Add to Cart",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "product-id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1029,6 +986,49 @@ const docTemplate = `{
                         "description": "page size",
                         "name": "pageSize",
                         "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/removefromcart/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Remove specified product of quantity 1 from cart using product id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Cart"
+                ],
+                "summary": "Remove product from cart",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product id",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     }
                 ],

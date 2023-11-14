@@ -157,34 +157,6 @@ info:
   title: Zog_festiv eCommerce API
   version: "1.0"
 paths:
-  /address:
-    post:
-      consumes:
-      - application/json
-      description: AddAddress functionality at the user side
-      parameters:
-      - description: User Address Input
-        in: body
-        name: address
-        required: true
-        schema:
-          $ref: '#/definitions/models.AddressInfo'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - Bearer: []
-      summary: AddAddress functionality for user
-      tags:
-      - User Profile
   /admin/adminlogin:
     post:
       consumes:
@@ -522,61 +494,6 @@ paths:
       summary: Display Cart
       tags:
       - User Cart
-  /cart/addtocart/{id}:
-    post:
-      consumes:
-      - application/json
-      description: Add product to the cart using product id
-      parameters:
-      - description: product-id
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - Bearer: []
-      summary: Add to Cart
-      tags:
-      - User Cart
-  /cart/removefromcart/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Remove specified product of quantity 1 from cart using product
-        id
-      parameters:
-      - description: Product id
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.Response'
-      security:
-      - Bearer: []
-      summary: Remove product from cart
-      tags:
-      - User Cart
   /login:
     post:
       consumes:
@@ -708,6 +625,27 @@ paths:
       summary: OTP login
       tags:
       - User OTP Login
+  /show-user-details:
+    get:
+      consumes:
+      - application/json
+      description: User Details from User Profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: User Details
+      tags:
+      - User Profile
   /signup:
     post:
       consumes:
@@ -734,11 +672,18 @@ paths:
       summary: SignUp functionality for user
       tags:
       - User Authentication
-  /users:
-    get:
+  /users/address:
+    post:
       consumes:
       - application/json
-      description: User Details from User Profile
+      description: AddAddress functionality at the user side
+      parameters:
+      - description: User Address Input
+        in: body
+        name: address
+        required: true
+        schema:
+          $ref: '#/definitions/models.AddressInfo'
       produces:
       - application/json
       responses:
@@ -752,9 +697,36 @@ paths:
             $ref: '#/definitions/response.Response'
       security:
       - Bearer: []
-      summary: User Details
+      summary: AddAddress functionality for user
       tags:
       - User Profile
+  /users/addtocart/{id}:
+    post:
+      consumes:
+      - application/json
+      description: Add product to the cart using product id
+      parameters:
+      - description: product-id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Add to Cart
+      tags:
+      - User Cart
   /users/cancel-order/{id}:
     put:
       consumes:
@@ -814,6 +786,34 @@ paths:
       summary: Get Order Details to user side
       tags:
       - User Order
+  /users/removefromcart/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove specified product of quantity 1 from cart using product
+        id
+      parameters:
+      - description: Product id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - Bearer: []
+      summary: Remove product from cart
+      tags:
+      - User Cart
   /users/update-password:
     put:
       consumes:

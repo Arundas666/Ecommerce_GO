@@ -41,11 +41,9 @@ func CropImage(c *gin.Context) {
 		return
 
 	}
-	
-	
+
 	//VESRILE NEXTJS FIREBASE GO
-	
-	
+
 	c.JSON(200, response.ClientResponse(200, "Image cropped and saved successfully", nil, nil))
 
 }

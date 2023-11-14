@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -29,9 +30,9 @@ func main() {
 	docs.SwaggerInfo.Title = "Ecommerce_site"
 	docs.SwaggerInfo.Description = "Ecommerce shirt selling application suing Golang"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:8081"
+	docs.SwaggerInfo.Host = "localhost:8000"
 	docs.SwaggerInfo.BasePath = ""
-	docs.SwaggerInfo.Schemes = []string{"https"}
+	docs.SwaggerInfo.Schemes = []string{"http"}
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		log.Fatalf("error loading the config file")
@@ -40,12 +41,17 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error connecting to the database: %v", err)
 	}
+
 	router := gin.Default()
+
 	router.LoadHTMLGlob("templates/*")
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = []string{"*"}
+	corsConfig.AllowMethods = []string{"GET", "POST"}
+	router.Use(cors.New(corsConfig))
 	routes.UserRoutes(router.Group("/"), db)
 	routes.AdminRoutes(router.Group("/admin"))
 	routes.ShippingCoordinatorroutes(router)
-	// url := ginSwagger.URL("http://localhost:8081/swagger/swagger.json")
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	listenAddr := fmt.Sprintf("%s:%s", cfg.DBPort, cfg.DBHost)
 	fmt.Printf("Starting server on %s...\n", cfg.BASE_URL)

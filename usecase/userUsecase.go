@@ -15,10 +15,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func  UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
+func UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
 
 	usersmatchingemail, err := repository.CheckUserExistsByEmail(user.Email)
-	
+
 	if err != nil {
 		return &models.TokenUser{}, errors.New("error with server")
 	}
@@ -82,7 +82,7 @@ func  UserSignup(user models.SignupDetail) (*models.TokenUser, error) {
 	if err != nil {
 
 		return &models.TokenUser{}, errors.New("counldnt create refresh token due to error")
-	
+
 	}
 
 	return &models.TokenUser{

@@ -1,7 +1,7 @@
 
 
 run:
-	go run main.go
+	air run 
 
 
 

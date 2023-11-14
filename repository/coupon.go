@@ -204,8 +204,7 @@ func DidUserAlreadyUsedThisCoupon(coupon string, userID int) (bool, error) {
 
 }
 
-
-func  UpdateUsedCoupon(coupon string, userID int) (bool, error) {
+func UpdateUsedCoupon(coupon string, userID int) (bool, error) {
 
 	var couponID uint
 	err := database.DB.Raw("select id from coupons where coupon = ?", coupon).Scan(&couponID).Error

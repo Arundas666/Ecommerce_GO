@@ -13,7 +13,7 @@ func AddRazorPayDetails(orderID string, razorPayOrderID string) error {
 	return nil
 }
 
-func CheckPaymentStatus( orderID string) (string, error) {
+func CheckPaymentStatus(orderID string) (string, error) {
 
 	var paymentStatus string
 	err := database.DB.Raw("select payment_status from orders where order_id = ?", orderID).Scan(&paymentStatus).Error

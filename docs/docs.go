@@ -4,16 +4,16 @@ package docs
 import "github.com/swaggo/swag"
 
 const docTemplate = `{
-    "schemes": {{ marshal .Schemes }},
+    "schemes": HTTP,
     "swagger": "2.0",
     "info": {
-        "description": "{{escape .Description}}",
-        "title": "{{.Title}}",
+        "description": "ecommerce site using golang",
+        "title": "Ecommerce Site",
         "contact": {},
-        "version": "{{.Version}}"
+        "version": "1.0"
     },
-    "host": "{{.Host}}",
-    "basePath": "{{.BasePath}}",
+    "host": "arundas.cloud",
+    "basePath": "/",
     "paths": {
         "/admin/adminlogin": {
             "post": {

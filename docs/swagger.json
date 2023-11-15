@@ -1,11 +1,20 @@
 {
+    "schemes": [
+        "http"
+    ],
     "swagger": "2.0",
     "info": {
         "description": "API for ecommerce website",
-        "title": "Ecommerce",
+        "title": "Zog_festiv eCommerce API",
         "contact": {},
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
         "version": "1.0"
     },
+    "host": "arundas.cloud",
+    "basePath": "/",
     "paths": {
         "/admin/add-category-offer": {
             "post": {

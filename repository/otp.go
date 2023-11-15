@@ -20,6 +20,7 @@ func FindUserByMobileNumber(phone string) (*domain.User, error) {
 	// return count > 0
 	var user domain.User
 	result := database.DB.Where(&domain.User{Phone: phone}).First(&user)
+	
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
@@ -27,6 +28,7 @@ func FindUserByMobileNumber(phone string) (*domain.User, error) {
 		return nil, result.Error
 	}
 	return &user, nil
+	
 
 }
 func UserDetailsUsingPhone(phone string) (models.SignupDetailResponse, error) {

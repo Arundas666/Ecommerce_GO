@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   models.AddCoupon:
     properties:
@@ -170,10 +171,14 @@ definitions:
       status_code:
         type: integer
     type: object
+host: arundas.cloud
 info:
   contact: {}
   description: API for ecommerce website
-  title: Ecommerce
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Zog_festiv eCommerce API
   version: "1.0"
 paths:
   /admin/add-category-offer:
@@ -967,6 +972,8 @@ paths:
       summary: Verify OTP
       tags:
       - User OTP Login
+schemes:
+- http
 securityDefinitions:
   JWT:
     in: header

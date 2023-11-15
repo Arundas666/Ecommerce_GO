@@ -16,11 +16,6 @@ func SendOTP(phone string) error {
 		return err
 	}
 
-	// ok := repository.FindUserByMobileNumber(phone)
-	// if !ok {
-	// 	return errors.New("the user does not exist")
-	// }
-
 	user, err := repository.FindUserByMobileNumber(phone)
 
 	if err != nil {
@@ -32,6 +27,7 @@ func SendOTP(phone string) error {
 	}
 
 	helper.TwilioSetup(cfg.ACCOUNTSID, cfg.AUTHTOKEN)
+
 	_, err = helper.TwilioSendOTP(phone, cfg.SERVICESSID)
 	if err != nil {
 		return errors.New("error occured while generating otp")

@@ -4,16 +4,20 @@ package docs
 import "github.com/swaggo/swag"
 
 const docTemplate = `{
-    "schemes": HTTP,
+    "schemes": {{ marshal .Schemes }},
     "swagger": "2.0",
     "info": {
-        "description": "ecommerce website using Golang",
-        "title": "Ecomeerce Website",
+        "description": "{{escape .Description}}",
+        "title": "{{.Title}}",
         "contact": {},
-        "version": "1.0"
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "{{.Version}}"
     },
-    "host": "arundas.cloud",
-    "basePath": "/",
+    "host": "{{.Host}}",
+    "basePath": "{{.BasePath}}",
     "paths": {
         "/admin/add-category-offer": {
             "post": {
@@ -1481,10 +1485,10 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "",
-	BasePath:         "",
-	Schemes:          []string{},
-	Title:            "Ecommerce",
+	Host:             "arundas.cloud",
+	BasePath:         "/",
+	Schemes:          []string{"http"},
+	Title:            "Zog_festiv eCommerce API",
 	Description:      "API for ecommerce website",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

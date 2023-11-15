@@ -11,6 +11,7 @@ import (
 var client *twilio.RestClient
 
 func TwilioSetup(username string, password string) {
+
 	client = twilio.NewRestClientWithParams(twilio.ClientParams{
 		Username: username,
 		Password: password,
@@ -38,7 +39,6 @@ func TwilioVerifyOTP(serviceID string, code string, phone string) error {
 	params.SetCode(code)
 	resp, err := client.VerifyV2.CreateVerificationCheck(serviceID, params)
 	fmt.Println("resp status", *resp.Status)
-
 	if err != nil {
 		return err
 	}

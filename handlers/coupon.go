@@ -15,7 +15,6 @@ import (
 // @Tags Admin Offer Management
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Param coupon body models.AddCoupon true "Add new Coupon"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
@@ -43,7 +42,6 @@ func AddCoupon(c *gin.Context) {
 // @Tags Admin Offer Management
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Param coupon body models.ProductOfferReceiver true "Add new Product Offer"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
@@ -76,7 +74,6 @@ func AddProdcutOffer(c *gin.Context) {
 // @Tags Admin Offer Management
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Param coupon body models.CategoryOfferReceiver true "Add new Category Offer"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
@@ -109,7 +106,6 @@ func AddCategoryOffer(c *gin.Context) {
 // @Tags Admin Offer Management
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
 // @Router /admin/coupons [get]
@@ -131,7 +127,6 @@ func GetCoupon(c *gin.Context) {
 // @Tags Admin Offer Management
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Param id path string true "Coupon id"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}

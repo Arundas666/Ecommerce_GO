@@ -88,7 +88,6 @@ func UserLoginWithPassword(c *gin.Context) {
 // @Tags User Profile
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
 // @Router /users/address [post]
@@ -112,7 +111,6 @@ func GetAllAddress(c *gin.Context) {
 // @Tags User Profile
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Param address body models.AddressInfo true "User Address Input"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
@@ -153,7 +151,6 @@ func AddAddress(c *gin.Context) {
 // @Tags User Profile
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
 // @Router /users/show-user-details [get]
@@ -178,7 +175,6 @@ func UserDetails(c *gin.Context) {
 // @Tags User Profile
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
 // @Router /users/edit-user-profile [get]
@@ -211,7 +207,6 @@ func UpdateUserDetails(c *gin.Context) {
 // @Tags User Profile
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Param body body models.UpdatePassword true "User Password update"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
@@ -242,7 +237,6 @@ func UpdatePassword(c *gin.Context) {
 // @Tags User Checkout
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
 // @Router /users/checkout [get]
@@ -266,7 +260,6 @@ func CheckOut(c *gin.Context) {
 // @Tags User Checkout
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
 // @Router /users/referral/apply [get]

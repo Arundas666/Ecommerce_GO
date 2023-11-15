@@ -17,7 +17,6 @@ import (
 // @Accept json
 // @Produce json
 // @Param id path string true "product-id"
-// @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
 // @Router /users/addtocart/{id} [post]
@@ -51,7 +50,6 @@ func AddToCart(c *gin.Context) {
 // @Tags User Cart
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Param id path string true "Product id"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
@@ -83,7 +81,6 @@ func RemoveFromCart(c *gin.Context) {
 // @Tags User Cart
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
 // @Router /users/cart [get]
@@ -106,7 +103,6 @@ func DisplayCart(c *gin.Context) {
 // @Tags User Cart
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
 // @Router /users/emptycart [delete]
@@ -128,7 +124,6 @@ func EmptyCart(c *gin.Context) {
 // @Tags User Checkout
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Param couponDetails body models.CouponAddUser true "Add coupon to order"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}

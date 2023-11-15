@@ -15,7 +15,6 @@ import (
 // @Tags User Order
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Param id path string true "page number"
 // @Param pageSize query string true "page size"
 // @Success 200 {object} response.Response{}
@@ -60,7 +59,6 @@ func GetOrderDetails(c *gin.Context) {
 // @Tags User Order
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Param id path string true "Order ID"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
@@ -91,7 +89,6 @@ func CancelOrder(c *gin.Context) {
 // @Tags User Order Management
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Param id path string true "Order ID"
 // @Param id path string true "Payment"
 // @Success 200 {object} response.Response{}

@@ -45,7 +45,6 @@ func LoginHandler(c *gin.Context) { // login handler for the admin
 // @Tags Admin Dash Board
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
 // @Router /admin/dashboard [GET]
@@ -68,7 +67,6 @@ func DashBoard(c *gin.Context) {
 // @Tags Admin Order Management
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Param id path string true "Order ID"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
@@ -95,7 +93,6 @@ func ApproveOrder(c *gin.Context) {
 // @Tags Admin Order Management
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Param id path string true "Order ID"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
@@ -122,7 +119,6 @@ func CancelOrderFromAdminSide(c *gin.Context) {
 // @Tags Admin Dash Board
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Param period path string true "sales report"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}

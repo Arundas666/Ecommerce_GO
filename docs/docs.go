@@ -7,14 +7,94 @@ const docTemplate = `{
     "schemes": HTTP,
     "swagger": "2.0",
     "info": {
-        "description": "ecommerce site using golang",
-        "title": "Ecommerce Site",
+        "description": "ecommerce website using Golang",
+        "title": "Ecomeerce Website",
         "contact": {},
         "version": "1.0"
     },
     "host": "arundas.cloud",
     "basePath": "/",
     "paths": {
+        "/admin/add-category-offer": {
+            "post": {
+                "description": "Add a new Offer for a Category by specifying a limit",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Offer Management"
+                ],
+                "summary": "Add  Category Offer",
+                "parameters": [
+                    {
+                        "description": "Add new Category Offer",
+                        "name": "coupon",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CategoryOfferReceiver"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/addcoupon": {
+            "post": {
+                "description": "Add A new Coupon which can be used by the users from the checkout section",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Offer Management"
+                ],
+                "summary": "Add  a new coupon by Admin",
+                "parameters": [
+                    {
+                        "description": "Add new Coupon",
+                        "name": "coupon",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.AddCoupon"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/adminlogin": {
             "post": {
                 "description": "Login handler for admin",
@@ -55,14 +135,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/dashboard": {
+        "/admin/approve-order/{id}": {
             "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Get Amin Home Page with Complete Details",
+                "description": "Approve Order from admin side which is in processing state",
                 "consumes": [
                     "application/json"
                 ],
@@ -70,9 +145,18 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin Dash Board"
+                    "Admin Order Management"
                 ],
-                "summary": "Admin Dashboard",
+                "summary": "Approve Order",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Order ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -87,16 +171,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/admin/offer/category-offer": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Add a new Offer for a Category by specifying a limit",
+            },
+            "put": {
+                "description": "Update shipment status from shipment coordinator's side",
                 "consumes": [
                     "application/json"
                 ],
@@ -104,17 +181,24 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Admin Offer Management"
+                    "Shipment Order Management"
                 ],
-                "summary": "Add  Category Offer",
+                "summary": "Update Shipment Status",
                 "parameters": [
                     {
-                        "description": "Add new Category Offer",
-                        "name": "coupon",
+                        "type": "string",
+                        "description": "Order ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Shipment status",
+                        "name": "shipmentStatus",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CategoryOfferReceiver"
+                            "$ref": "#/definitions/models.Shipment_status"
                         }
                     }
                 ],
@@ -134,13 +218,46 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/offer/coupons": {
+        "/admin/cancel-order/{id}": {
             "get": {
-                "security": [
+                "description": "Cancel Order from admin side",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Order Management"
+                ],
+                "summary": "Cancel Order Admin",
+                "parameters": [
                     {
-                        "Bearer": []
+                        "type": "string",
+                        "description": "Order ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/coupons": {
+            "get": {
                 "description": "Get Available coupon details for admin side",
                 "consumes": [
                     "application/json"
@@ -168,58 +285,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/offer/coupons/addcoupon": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Add A new Coupon which can be used by the users from the checkout section",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Admin Offer Management"
-                ],
-                "summary": "Add  a new coupon by Admin",
-                "parameters": [
-                    {
-                        "description": "Add new Coupon",
-                        "name": "coupon",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.AddCoupon"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/offer/coupons/expire/{id}": {
+        "/admin/coupons/expire/{id}": {
             "patch": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "Expire Coupon by admin which are already present by passing coupon id",
                 "consumes": [
                     "application/json"
@@ -256,13 +323,37 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/offer/product-offer": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
+        "/admin/dashboard": {
+            "get": {
+                "description": "Get Amin Home Page with Complete Details",
+                "consumes": [
+                    "application/json"
                 ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin Dash Board"
+                ],
+                "summary": "Admin Dashboard",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/product-offer": {
+            "post": {
                 "description": "Add a new Offer for a product by specifying a limit",
                 "consumes": [
                     "application/json"
@@ -301,106 +392,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/orders/approve-order/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Place order from the user side",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User Order Management"
-                ],
-                "summary": "Place Order",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Order ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Payment",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/orders/cancel-order/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Cancel Order from admin side",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Admin Order Management"
-                ],
-                "summary": "Cancel Order Admin",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Order ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/admin/sales-report/{period}": {
             "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "Get Filtered sales report by week, month and year",
                 "consumes": [
                     "application/json"
@@ -421,117 +414,6 @@ const docTemplate = `{
                         "required": true
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/apply-coupon": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Add coupon to get discount on Checkout section",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User Checkout"
-                ],
-                "summary": "Apply coupon on Checkout Section",
-                "parameters": [
-                    {
-                        "description": "Add coupon to order",
-                        "name": "couponDetails",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.CouponAddUser"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/cart": {
-            "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Display all products of the cart along with price of the product and grand total",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User Cart"
-                ],
-                "summary": "Display Cart",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Remove all product from cart",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User Cart"
-                ],
-                "summary": "Delete all Items Present inside the Cart",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -676,40 +558,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/referral/apply": {
-            "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "Apply referrals amount to order",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User Checkout"
-                ],
-                "summary": "Apply referrals",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/response.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/send-otp": {
             "post": {
                 "description": "Send OTP to Authenticate user",
@@ -750,14 +598,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/show-user-details": {
-            "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "description": "User Details from User Profile",
+        "/shipping-coordinator-login": {
+            "post": {
+                "description": "Login handler for ShipmnetCoordinator",
                 "consumes": [
                     "application/json"
                 ],
@@ -765,9 +608,20 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User Profile"
+                    "Shipment coordinator"
                 ],
-                "summary": "User Details",
+                "summary": "Shipment Coordinator Login",
+                "parameters": [
+                    {
+                        "description": "Admin login details",
+                        "name": "shipmentCoordinator",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ShippingCoordinatorLogin"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -826,11 +680,6 @@ const docTemplate = `{
         },
         "/users/address": {
             "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "AddAddress functionality at the user side",
                 "consumes": [
                     "application/json"
@@ -871,11 +720,6 @@ const docTemplate = `{
         },
         "/users/addtocart/{id}": {
             "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "Add product to the cart using product id",
                 "consumes": [
                     "application/json"
@@ -912,13 +756,48 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/cancel-order/{id}": {
-            "put": {
-                "security": [
+        "/users/apply-coupon": {
+            "post": {
+                "description": "Add coupon to get discount on Checkout section",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Checkout"
+                ],
+                "summary": "Apply coupon on Checkout Section",
+                "parameters": [
                     {
-                        "Bearer": []
+                        "description": "Add coupon to order",
+                        "name": "couponDetails",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CouponAddUser"
+                        }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/cancel-order/{id}": {
+            "put": {
                 "description": "Cancel order by the user using order ID",
                 "consumes": [
                     "application/json"
@@ -955,13 +834,124 @@ const docTemplate = `{
                 }
             }
         },
+        "/users/cart": {
+            "get": {
+                "description": "Display all products of the cart along with price of the product and grand total",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Cart"
+                ],
+                "summary": "Display Cart",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/checkout": {
+            "get": {
+                "description": "Checkout page of the order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Checkout"
+                ],
+                "summary": "Checkout page",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/edit-user-profile": {
+            "get": {
+                "description": "Update User Details from User Profile",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Profile"
+                ],
+                "summary": "Update User Details",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/emptycart": {
+            "delete": {
+                "description": "Remove all product from cart",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Cart"
+                ],
+                "summary": "Delete all Items Present inside the Cart",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/users/orders/{id}": {
             "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "Get all order details done by user to user side",
                 "consumes": [
                     "application/json"
@@ -1005,13 +995,82 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/removefromcart/{id}": {
-            "delete": {
-                "security": [
+        "/users/place-order/{id}/{{payment}}": {
+            "get": {
+                "description": "Place order from the user side",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Order Management"
+                ],
+                "summary": "Place Order",
+                "parameters": [
                     {
-                        "Bearer": []
+                        "type": "string",
+                        "description": "Order ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Payment",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/referral/apply": {
+            "get": {
+                "description": "Apply referrals amount to order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Checkout"
+                ],
+                "summary": "Apply referrals",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/removefromcart/{id}": {
+            "delete": {
                 "description": "Remove specified product of quantity 1 from cart using product id",
                 "consumes": [
                     "application/json"
@@ -1048,13 +1107,37 @@ const docTemplate = `{
                 }
             }
         },
+        "/users/show-user-details": {
+            "get": {
+                "description": "User Details from User Profile",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User Profile"
+                ],
+                "summary": "User Details",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/users/update-password": {
             "put": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
                 "description": "Update User Password",
                 "consumes": [
                     "application/json"
@@ -1285,6 +1368,34 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Shipment_status": {
+            "type": "object",
+            "required": [
+                "shipment_status"
+            ],
+            "properties": {
+                "shipment_status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ShippingCoordinatorLogin": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 8
+                }
+            }
+        },
         "models.SignupDetail": {
             "type": "object",
             "properties": {
@@ -1373,7 +1484,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Zog_festiv eCommerce API",
+	Title:            "Ecommerce",
 	Description:      "API for ecommerce website",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

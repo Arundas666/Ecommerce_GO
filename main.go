@@ -29,7 +29,7 @@ func main() {
 	docs.SwaggerInfo.Title = "Ecommerce_site"
 	docs.SwaggerInfo.Description = "Ecommerce shirt selling application suing Golang"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:8000"
+	docs.SwaggerInfo.Host = "arundas.cloud"
 	docs.SwaggerInfo.BasePath = ""
 	docs.SwaggerInfo.Schemes = []string{"http"}
 	cfg, err := config.LoadConfig()

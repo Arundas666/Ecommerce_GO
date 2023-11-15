@@ -45,7 +45,7 @@ func ShippingCoordinatorLogin(c *gin.Context) { // login handler for the admin
 // @Produce json
 // @Security Bearer
 // @Param id path string true "Order ID"
-// @Param shipmentStatus  body models.ShipmentStatus true "Shipment status"
+// @Param shipmentStatus  body models.Shipment_status true "Shipment status"
 // @Success 200 {object} response.Response{}
 // @Failure 500 {object} response.Response{}
 // @Router /admin/approve-order/{id} [put]

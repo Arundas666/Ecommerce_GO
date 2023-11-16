@@ -14,27 +14,24 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @title   Zog_festiv eCommerce API
-// @version  1.0
-// @description API for ecommerce website
-
+// @title         Zog_festiv eCommerce API
+// @version       1.0
+// @description   API for ecommerce website
 // @securityDefinitions.apiKey JWT
-// @in       header
-// @name      token
-
-// @license.name Apache 2.0
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-// @host   arundas.cloud
-// @BasePath  /
-
-// @schemes http
+// @in header
+// @name token
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+// @host          www.arundas.cloud
+// @BasePath      /
+// @schemes       https
 func main() {
-	docs.SwaggerInfo.Title = "Zog_festiv"
-	docs.SwaggerInfo.Description = "Yo Yo Yo 148 3 to the 3 to the 6 to the 9 "
+	docs.SwaggerInfo.Title = "Ecommerce_site"
+	docs.SwaggerInfo.Description = "Ecommerce shirt selling application suing Golang"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:8000"
+	docs.SwaggerInfo.Host = "arundas.cloud"
 	docs.SwaggerInfo.BasePath = ""
-	docs.SwaggerInfo.Schemes = []string{"http"}
+	docs.SwaggerInfo.Schemes = []string{"https"}
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		log.Fatalf("error loading the config file")

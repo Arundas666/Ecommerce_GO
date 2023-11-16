@@ -1351,10 +1351,15 @@
         }
     },
     "securityDefinitions": {
-        "JWT": {
+        "Bearer": {
             "type": "apiKey",
-            "name": "token",
+            "name": "Authorization",
             "in": "header"
         }
-    }
+    },
+    "security": [
+        {
+            "Bearer": []
+        }
+    ]
 }

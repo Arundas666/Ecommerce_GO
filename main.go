@@ -17,7 +17,14 @@ import (
 // @title         Zog_festiv eCommerce API
 // @version       1.0
 // @description   API for ecommerce website
-// @securityDefinitions.apiKey JWT
+
+// @SecurityDefinition BearerAuth
+// @TokenUrl /auth/token
+
+// @securityDefinitions.Bearer		type apiKey
+// @securityDefinitions.Bearer		name Authorization
+// @securityDefinitions.Bearer		in header
+// @securityDefinitions.BasicAuth	type basic
 // @in header
 // @name token
 // @license.name  Apache 2.0
@@ -29,9 +36,9 @@ func main() {
 	docs.SwaggerInfo.Title = "Ecommerce_site"
 	docs.SwaggerInfo.Description = "Ecommerce shirt selling application suing Golang"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "arundas.cloud"
+	docs.SwaggerInfo.Host = "localhost:8000"
 	docs.SwaggerInfo.BasePath = ""
-	docs.SwaggerInfo.Schemes = []string{"https"}
+	docs.SwaggerInfo.Schemes = []string{"http"}
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		log.Fatalf("error loading the config file")

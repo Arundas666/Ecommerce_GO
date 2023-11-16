@@ -869,8 +869,10 @@ paths:
       tags:
       - User OTP Login
 securityDefinitions:
-  JWT:
+  Bearer:
     in: header
-    name: token
+    name: Authorization
     type: apiKey
+security:
+- Bearer: []
 swagger: "2.0"

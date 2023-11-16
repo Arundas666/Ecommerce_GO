@@ -12,6 +12,7 @@ import (
 
 func AuthorizationMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
 		tokenHeader := c.GetHeader("Authorization")
 		fmt.Println(tokenHeader, "this is the token header")
 		if tokenHeader == "" {

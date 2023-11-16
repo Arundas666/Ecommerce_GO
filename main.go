@@ -24,14 +24,14 @@ import (
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 // @host          www.arundas.cloud
 // @BasePath      /
-// @schemes       http
+// @schemes       https
 func main() {
 	docs.SwaggerInfo.Title = "Ecommerce_site"
 	docs.SwaggerInfo.Description = "Ecommerce shirt selling application suing Golang"
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = "arundas.cloud"
 	docs.SwaggerInfo.BasePath = ""
-	docs.SwaggerInfo.Schemes = []string{"http"}
+	docs.SwaggerInfo.Schemes = []string{"https"}
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		log.Fatalf("error loading the config file")

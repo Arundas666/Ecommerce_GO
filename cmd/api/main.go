@@ -47,9 +47,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error connecting to the database: %v", err)
 	}
+	fmt.Println(db, "DB CONNECTED SUCCESFULLY")
 	router := gin.Default()
-
+	fmt.Println("HOOOII")
 	router.LoadHTMLGlob("templates/*")
+	fmt.Println("HHHEEEYYY")
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowOrigins = []string{"*"}
 	corsConfig.AllowMethods = []string{"GET", "POST"}

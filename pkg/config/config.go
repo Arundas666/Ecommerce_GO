@@ -1,6 +1,8 @@
 package config
 
 import (
+	"fmt"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/spf13/viper"
 )
@@ -46,6 +48,7 @@ func LoadConfig() (Config, error) {
 	if err := validator.New().Struct(&config); err != nil {
 		return config, err
 	}
+	fmt.Println("CONFFF", config)
 	return config, nil
 
 }

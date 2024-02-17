@@ -12,8 +12,8 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase(cfg config.Config) (*gorm.DB, error) {
-	// pasqlInfo := fmt.Sprintf("host=%s user=%s dbname=%s port=%s password=%s", cfg.DBHost, cfg.DBUser, cfg.DBName, cfg.DBPort, cfg.DBPassword)
-	pasqlInfo := "postgresql://arundas285%40gmail.com:ZP2rkI9wpxgA@ep-empty-dawn-a1z0p435.ap-southeast-1.aws.neon.tech/ecommerce?sslmode=require"
+	pasqlInfo := fmt.Sprintf("host=%s user=%s dbname=%s port=%s password=%s", cfg.DBHost, cfg.DBUser, cfg.DBName, cfg.DBPort, cfg.DBPassword)
+	// pasqlInfo := "postgresql://arundas285%40gmail.com:ZP2rkI9wpxgA@ep-empty-dawn-a1z0p435.ap-southeast-1.aws.neon.tech/ecommerce?sslmode=require"
 	fmt.Println("DBBB", pasqlInfo)
 	db, dberr := gorm.Open(postgres.Open(pasqlInfo), &gorm.Config{})
 	if dberr != nil {

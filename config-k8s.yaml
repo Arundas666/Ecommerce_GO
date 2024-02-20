@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-congifmap
+data:
+  postgres-host: postgres-service
+  postgres-port: "5432"
